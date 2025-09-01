@@ -11,13 +11,13 @@ author: "XieHaoyang"
 pacman::p_load(sf, tmap, tidyverse, rvest)
 ```
 
-### Importing the data
+## Importing Geospatial data
 
 ```{r}
 mpsz <- st_read("data/geospatial/MasterPlan2019SubzoneBoundaryNoSeaKML.kml")
 ```
 
-## Tidying data
+#### Tidying data
 
 ```{r}
 extract_kml_field <- function(html_text, field_name) {
@@ -59,6 +59,8 @@ popdata <- read_csv("data/geospatial/respopagesextod2024.csv")
 
 ### Data preparation
 
+#### Data wrangling
+
 ```{r}
 popdata2024 <- popdata %>%
   group_by(PA, SZ, AG) %>%
@@ -79,7 +81,7 @@ mutate(`DEPENDENCY` = (`YOUNG` + `AGED`)
        `TOTAL`, `DEPENDENCY`)
 ```
 
-## Joining the attribute data and geospatial data
+#### Joining the attribute data and geospatial data
 
 ```{r}
 popdata2024 <- popdata2024 %>%
@@ -97,9 +99,9 @@ mpsz_pop2024 <- left_join(mpsz, popdata2024,
 write_rds(mpsz_pop2024, "data/rds/mpsz_pop2024.rds")
 ```
 
-### Choropleth Mapping Geospatial Data Using tmap
+## Choropleth Mapping Geospatial Data Using tmap
 
-## Plotting a choropleth map quickly by using qtm()
+### Plotting a choropleth map quickly by using qtm()
 
 ```{r}
 tmap_mode("plot")
@@ -107,7 +109,7 @@ qtm(shp = mpsz_pop2024,
     fill = "DEPENDENCY")
 ```
 
-## Creating a choropleth map by using tmap’s elements
+### Creating a choropleth map by using tmap’s elements
 
 ```{r}
 tm_shape(mpsz_pop2024) +
@@ -157,7 +159,9 @@ tm_shape(mpsz_pop2024)+
              lty = "dashed")
 ```
 
-## Data classification methods of tmap
+### Data classification methods of tmap
+
+#### Plotting choropleth maps with built-in classification methods
 
 ```{r}
 tm_shape(mpsz_pop2024) +
@@ -177,7 +181,8 @@ tm_shape(mpsz_pop2024) +
   tm_borders(fill_alpha = 0.5)
 ```
 
-#  Plotting choropleth map with custome break
+#### Plotting choropleth map with custome break
+
 ```{r}
 summary(mpsz_pop2024$DEPENDENCY)
 ```
@@ -190,7 +195,9 @@ tm_shape(mpsz_pop2024)+
   tm_borders(fill_alpha = 0.5)
 ```
 
-## Colour Scheme
+### Colour Scheme
+
+#### Using ColourBrewer palette
 
 ```{r}
 tm_shape(mpsz_pop2024) +
@@ -212,6 +219,8 @@ tm_shape(mpsz_pop2024) +
   tm_borders(fill_alpha = 0.5)
 ```
 
+#### Cartographic Furniture
+
 ```{r}
 tm_shape(mpsz_pop2024) +
   tm_polygons(fill = "DEPENDENCY",
@@ -226,7 +235,7 @@ tm_shape(mpsz_pop2024) +
              position = c("left", "bottom"))
 ```
 
-## Map layout
+### Map layout
 
 ```{r}
 tm_shape(mpsz_pop2024) +
@@ -260,11 +269,12 @@ tm_shape(mpsz_pop2024) +
 tmap_style("white")
 ```
 
-### Drawing Small Multiple Choropleth Maps
+## Drawing Small Multiple Choropleth Maps
 
-## By assigning multiple values to at least one of the aesthetic arguments
+### By assigning multiple values to at least one of the aesthetic arguments
 
 ```{r}
+#| fig-width: 12
 tm_shape(mpsz_pop2024) + 
   tm_polygons(
     fill = c("YOUNG", "AGED"),
@@ -279,7 +289,8 @@ tm_shape(mpsz_pop2024) +
   tmap_style("natural")
 ```
 
-## By arrange multiples choropleth maps in a grid layout
+### By arrange multiples choropleth maps in a grid layout
+
 ```{r}
 youngmap <- tm_shape(mpsz_pop2024)+ 
   tm_polygons(fill = "YOUNG",
@@ -308,7 +319,7 @@ agedmap <- tm_shape(mpsz_pop2024)+
 tmap_arrange(youngmap, agedmap, asp=1, ncol=2)
 ```
 
-## By defining a group-by variable in tm_facets()
+### By defining a group-by variable in tm_facets()
 
 ```{r}
 tm_shape(mpsz_pop2024) +
@@ -327,7 +338,7 @@ tm_shape(mpsz_pop2024) +
   tm_borders(fill_alpha = 0.5)
 ```
 
-### Mappping Spatial Object Meeting a Selection Criterion
+## Mappping Spatial Object Meeting a Selection Criterion
 
 ```{r}
 mpsz_pop2024 %>%
@@ -341,7 +352,7 @@ mpsz_pop2024 %>%
   tm_borders(fill_alpha = 0.5)
 ```
 
-### Complementing Thematic Map with Statistical Chart
+## Complementing Thematic Map with Statistical Chart
 
 ```{r}
 mpsz_pop2024 %>%
@@ -381,7 +392,7 @@ tm_shape(outlier_sf) +
   tm_layout(asp = 0.8)
 ```
 
-### Creating Interactive Map
+## Creating Interactive Map
 
 ```{r}
 region_selected <- mpsz_pop2024 %>%
@@ -432,4 +443,3 @@ tm_shape(region_selected,
   tm_borders(col = "red", lwd = 2) +
   tm_view(set_zoom_limits = c(12,14))
 ```
-

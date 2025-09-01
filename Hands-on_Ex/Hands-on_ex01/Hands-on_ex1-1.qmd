@@ -11,23 +11,29 @@ author: "XieHaoyang"
 pacman::p_load(sf, tidyverse)
 ```
 
-### Importing the data
+## Importing Geospatial data
+
+1.  Importing polygon feature data in shapefile format
 
 ```{r}
 mpsz = st_read(dsn = "data/geospatial", 
                   layer = "MP14_SUBZONE_WEB_PL")
 ```
 
+2.  Importing polyline feature data in shapefile form
+
 ```{r}
 cyclingpath = st_read(dsn = "data/geospatial", 
                          layer = "CyclingPathGazette")
 ```
 
+3.  Importing GIS data in kml format
+
 ```{r}
 preschool = st_read("data/geospatial/PreSchoolsLocation.kml")
 ```
 
-### Checking the Content
+## Checking the Content of A Simple Feature Data Frame
 
 ```{r}
 st_geometry(mpsz)
@@ -41,7 +47,7 @@ glimpse(mpsz)
 head(mpsz, n=5)  
 ```
 
-### Plotting the Geospatial Data
+## Plotting the Geospatial Data
 
 ```{r}
 plot(mpsz)
@@ -61,7 +67,7 @@ plot(st_geometry(preschool),
      add = TRUE)
 ```
 
-### Working with Projection
+## Working with Projection
 
 ```{r}
 st_crs(mpsz)
@@ -75,7 +81,7 @@ mpsz <- st_set_crs(mpsz, 3414)
 st_crs(mpsz)
 ```
 
-## Transforming the projection of preschool from wgs84 to svy21
+### Transforming the projection of preschool from wgs84 to svy21
 
 ```{r}
 preschool <- st_transform(preschool, 
@@ -87,7 +93,7 @@ plot(st_geometry(mpsz))
 plot(st_geometry(preschool), add = TRUE)
 ```
 
-### Importing the aspatial data
+## Importing the aspatial data
 
 ```{r}
 listings <- read_csv("data/geospatial/listings.csv")
@@ -97,7 +103,7 @@ listings <- read_csv("data/geospatial/listings.csv")
 list(listings) 
 ```
 
-## Creating a simple feature data frame from an aspatial data frame
+### Creating a simple feature data frame from an aspatial data frame
 
 ```{r}
 listings_sf <- st_as_sf(listings, 
@@ -110,9 +116,9 @@ listings_sf <- st_as_sf(listings,
 glimpse(listings_sf)
 ```
 
-### Geoprocessing with sf package
+## Geoprocessing with sf package
 
-## Use case 1: Land acquisition analysis
+### Use case 1: Land acquisition analysis
 
 ```{r}
 buffer_cycling <- st_buffer(
