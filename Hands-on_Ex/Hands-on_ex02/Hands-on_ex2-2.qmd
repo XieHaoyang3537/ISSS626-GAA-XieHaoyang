@@ -1,5 +1,192 @@
 ---
-title: "Hands-on_ex2-2"
-format: html
+title: "Hands-on exercise 2-2: 2nd Order Spatial Point Patterns Analysis Methods"
+author: "XieHaoyang"
 ---
 
+## Getting Started
+
+### Install and lauching R packages
+
+```{r}
+pacman::p_load(sf, spatstat, tmap, tidyverse, rvest)
+```
+
+## Data Import and Preparation
+
+```{r}
+childcare_tm_ppp <- readRDS("data/childcare_tm_ppp.rds")
+childcare_ck_ppp <- readRDS("data/childcare_ck_ppp.rds")
+```
+
+## Second-order Spatial Point Patterns Analysis
+
+## Analysing Spatial Point Process Using G-Function
+
+### Choa Chu Kang planning area
+
+#### Computing G-function estimation
+
+```{r}
+set.seed(1234)
+```
+
+```{r}
+G_CK = Gest(childcare_ck_ppp, correction = "border")
+plot(G_CK, xlim=c(0,500))
+```
+
+#### Performing Complete Spatial Randomness Test
+
+```{r}
+G_CK.csr <- envelope(childcare_ck_ppp, Gest, nsim = 999)
+```
+
+```{r}
+plot(G_CK.csr)
+```
+
+### Tampines planning area
+
+#### Computing G-function estimation
+
+```{r}
+G_tm = Gest(childcare_tm_ppp, correction = "best")
+plot(G_tm)
+```
+
+#### Performing Complete Spatial Randomness Test
+
+```{r}
+G_tm.csr <- envelope(childcare_tm_ppp, Gest, correction = "all", nsim = 999)
+```
+
+```{r}
+plot(G_tm.csr)
+```
+
+## Analysing Spatial Point Process Using F-Function
+
+### Choa Chu Kang planning area
+
+#### Computing F-function estimation
+
+```{r}
+F_CK = Fest(childcare_ck_ppp)
+plot(F_CK)
+```
+
+### Performing Complete Spatial Randomness Test
+
+```{r}
+F_CK.csr <- envelope(childcare_ck_ppp, Fest, nsim = 999)
+```
+
+```{r}
+plot(F_CK.csr)
+```
+
+### Tampines planning area
+
+#### Computing F-function estimation
+
+```{r}
+F_tm = Fest(childcare_tm_ppp, correction = "best")
+plot(F_tm)
+```
+
+#### Performing Complete Spatial Randomness Test
+
+```{r}
+F_tm.csr <- envelope(childcare_tm_ppp, Fest, correction = "all", nsim = 999)
+```
+
+```{r}
+plot(F_tm.csr)
+```
+
+## Analysing Spatial Point Process Using K-Function
+
+### Choa Chu Kang planning area
+
+#### Computing K-fucntion estimate
+
+```{r}
+K_ck = Kest(childcare_ck_ppp, correction = "Ripley")
+plot(K_ck, . -r ~ r, ylab= "K(d)-r", xlab = "d(m)")
+```
+
+#### Performing Complete Spatial Randomness Test
+
+```{r}
+K_ck.csr <- envelope(childcare_ck_ppp, Kest, nsim = 99, rank = 1, glocal=TRUE)
+```
+
+```{r}
+plot(K_ck.csr, . - r ~ r, xlab="d", ylab="K(d)-r")
+```
+
+### Tampines planning area
+
+#### Computing K-fucntion estimation
+
+```{r}
+K_tm = Kest(childcare_tm_ppp, correction = "Ripley")
+plot(K_tm, . -r ~ r, 
+     ylab= "K(d)-r", xlab = "d(m)", 
+     xlim=c(0,1000))
+```
+
+#### Performing Complete Spatial Randomness Test
+
+```{r}
+K_tm.csr <- envelope(childcare_tm_ppp, Kest, nsim = 99, rank = 1, glocal=TRUE)
+```
+
+```{r}
+plot(K_tm.csr, . - r ~ r, 
+     xlab="d", ylab="K(d)-r", xlim=c(0,500))
+```
+
+## Analysing Spatial Point Process Using L-Function
+
+### Choa Chu Kang planning area
+
+#### Computing L Fucntion estimation
+
+```{r}
+L_ck = Lest(childcare_ck_ppp, correction = "Ripley")
+plot(L_ck, . -r ~ r, 
+     ylab= "L(d)-r", xlab = "d(m)")
+```
+
+#### Performing Complete Spatial Randomness Test
+
+```{r}
+L_ck.csr <- envelope(childcare_ck_ppp, Lest, nsim = 99, rank = 1, glocal=TRUE)
+```
+
+```{r}
+plot(L_ck.csr, . - r ~ r, xlab="d", ylab="L(d)-r")
+```
+
+### Tampines planning area
+
+#### Computing L-fucntion estimate
+
+```{r}
+L_tm = Lest(childcare_tm_ppp, correction = "Ripley")
+plot(L_tm, . -r ~ r, 
+     ylab= "L(d)-r", xlab = "d(m)", 
+     xlim=c(0,1000))
+```
+
+#### Performing Complete Spatial Randomness Test
+
+```{r}
+L_tm.csr <- envelope(childcare_tm_ppp, Lest, nsim = 99, rank = 1, glocal=TRUE)
+```
+
+```{r}
+plot(L_tm.csr, . - r ~ r, 
+     xlab="d", ylab="L(d)-r", xlim=c(0,500))
+```

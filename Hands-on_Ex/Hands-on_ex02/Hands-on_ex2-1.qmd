@@ -65,7 +65,7 @@ childcare_sf <- st_read("data/ChildCareServices.kml") %>%
   st_transform(crs = 3414)
 ```
 
-### Mapping the geospatial data sets 
+### Mapping the geospatial data sets
 
 ```{r}
 tmap_mode('view')
@@ -263,7 +263,7 @@ plot(kde_childcareSG_fb, main = "Fixed bandwidth")
 plot(kde_childcareSG_ab, main = "Adaptive bandwidth")
 ```
 
-##  Plotting cartographic quality KDE map
+## Plotting cartographic quality KDE map
 
 ### Converting gridded output into raster
 
@@ -418,5 +418,10 @@ plot(density(childcare_jw_ppp.km,
              edge=TRUE, 
              kernel="gaussian"),
      main="Jurong West")
+```
+
+```{r}
+saveRDS(childcare_tm_ppp, "data/childcare_tm_ppp.rds")
+saveRDS(childcare_ck_ppp, "data/childcare_ck_ppp.rds")
 ```
 
