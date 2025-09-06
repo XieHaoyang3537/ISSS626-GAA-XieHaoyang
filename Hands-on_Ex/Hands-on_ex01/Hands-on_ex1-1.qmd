@@ -74,7 +74,7 @@ st_crs(mpsz)
 ```
 
 ```{r}
-mpsz <- st_set_crs(mpsz, 3414)
+mpsz <- st_transform(mpsz, 3414)
 ```
 
 ```{r}
@@ -142,6 +142,19 @@ sum(buffer_cycling$AREA)
 mpsz_selected <- mpsz %>%
   filter(SUBZONE_N == "TAMPINES WEST") 
 ```
+
+```{r}
+st_crs(buffer_cycling)
+st_crs(mpsz_selected)
+
+buffer_cycling <- st_transform(buffer_cycling, st_crs(mpsz_selected))
+buffer_cycling_selected <- st_intersection(buffer_cycling, mpsz_selected)
+```
+
+```{r}
+plot(buffer_cycling_selected)
+```
+
 
 ## Use case 2: To determine the number of pre-schools by planning subzone
 
