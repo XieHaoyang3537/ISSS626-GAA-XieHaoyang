@@ -424,4 +424,3 @@ plot(density(childcare_jw_ppp.km,
 saveRDS(childcare_tm_ppp, "data/childcare_tm_ppp.rds")
 saveRDS(childcare_ck_ppp, "data/childcare_ck_ppp.rds")
 ```
-
