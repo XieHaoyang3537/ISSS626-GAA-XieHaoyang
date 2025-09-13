@@ -1,11 +1,6 @@
 ---
 title: "Hands-on exercise 2-1: First-order Spatial Point Patterns Analysis Methods"
 author: "XieHaoyang"
-execute: 
-  eval: true
-  echo: true
-  warning: false
-  freeze: true
 ---
 
 ## Getting Started

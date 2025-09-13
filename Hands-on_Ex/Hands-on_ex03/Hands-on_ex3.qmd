@@ -1,11 +1,6 @@
 ---
 title: "Hands-on exercise 3: Spatio-Temporal Point Patterns Analysis"
 author: "XieHaoyang"
-execute: 
-  eval: true
-  echo: true
-  warning: false
-  freeze: true
 ---
 
 ## Installing and Loading the R packages
