@@ -3,7 +3,9 @@ project:
 
 website:
   title: "ISSS626-GAA"
+  favicon: assets/favicon.png
   navbar:
+    background: primary
     left:
     - text: "Hands-on Exercise"
       menu:
@@ -17,6 +19,14 @@ website:
           href: "Hands-on_Ex/Hands-on_ex02/Hands-on_ex2-2.html"
         - text: "Hands-on Exercise 3"
           href: "Hands-on_Ex/Hands-on_ex03/Hands-on_ex3.html"
+    - text: "In-class Exercise"
+      menu:
+        - text: "In-class Exercise 1"
+          href: "In-class_Ex/In-class_ex1/In-class_ex03a.html"
+    - text: "Take-home Exercise"
+      menu: 
+        - text: "Take-home Exercise 1"
+          href: "Take-home_Ex/Take-home_ex1/Take-home_ex1/html"
     right:
       - href: index.qmd
         text: Home
@@ -26,9 +36,10 @@ format:
   html:
     theme:
       - cosmo
-      - brand
     css: styles.css
     toc: true
+    toc-location: left
+    toc-depth: 3
 
 editor: visual
 
