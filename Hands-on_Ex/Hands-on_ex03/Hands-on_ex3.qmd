@@ -1,6 +1,11 @@
 ---
 title: "Hands-on exercise 3: Spatio-Temporal Point Patterns Analysis"
 author: "XieHaoyang"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
 
 ## Installing and Loading the R packages
@@ -100,7 +105,6 @@ tm_facets(by="Month_fac",
             free.coords=FALSE, 
             drop.units = TRUE)
 ```
-
 :::
 
 ## Computing STKDE by Month

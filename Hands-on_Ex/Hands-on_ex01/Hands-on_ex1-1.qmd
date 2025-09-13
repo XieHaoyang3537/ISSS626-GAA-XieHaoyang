@@ -1,6 +1,11 @@
 ---
 title: "Hands-on exercise 1-1: Geospatial Data Science with R"
 author: "XieHaoyang"
+execute: 
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
 ---
 
 ## Getting Started
@@ -154,7 +159,6 @@ buffer_cycling_selected <- st_intersection(buffer_cycling, mpsz_selected)
 ```{r}
 plot(buffer_cycling_selected)
 ```
-
 
 ## Use case 2: To determine the number of pre-schools by planning subzone
 
