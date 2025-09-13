@@ -1,11 +1,6 @@
 ---
 title: "Hands-on exercise 1-1: Geospatial Data Science with R"
 author: "XieHaoyang"
-execute: 
-  eval: true
-  echo: true
-  warning: false
-  freeze: true
 ---
 
 ## Getting Started
