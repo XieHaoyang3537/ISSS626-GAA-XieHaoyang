@@ -17,7 +17,7 @@ execute:
 ## 2.1 Loading Packages
 
 ```{r}
-pacman::p_load(sf, tmap, tidyverse, httr, ggplot2, dplyr, lubridate)
+pacman::p_load(sf, tmap, tidyverse, httr, ggplot2, dplyr, lubridate, spatstat, stars)
 ```
 
 ## 2.2 The Data
@@ -26,7 +26,7 @@ The datasets are Information on Corporate Entities datasets of ACRA. There are a
 
 To facilitate data extraction, the original datasets have been merged to generate a new dataset using the following code.
 
-```{r,eval=FALSE}
+```         
 folder_path <- "data/aspatial/acra"
 file_list <- list.files(path = folder_path,
                         pattern = "^ACRA*.*\\.csv$",
@@ -39,7 +39,7 @@ write_rds(acra_data,
           "data/rds/acra_data.rds")
 ```
 
-```{r,eval=FALSE}
+```         
 acra_data <- read_rds("D:/XieHaoyang3537/ISSS626-GAA-XieHaoyang/In-class_Ex/In-class_ex2/data/rds/acra_data.rds")
 ```
 
@@ -47,14 +47,14 @@ acra_data <- read_rds("D:/XieHaoyang3537/ISSS626-GAA-XieHaoyang/In-class_Ex/In-c
 
 Time Range
 
-```{r,eval=FALSE}
+```         
 start_date <- as.Date("2024-01-01")
 end_date   <- as.Date("2025-06-30")
 ```
 
 Define functions: filtering + cleaning + geocoding
 
-```{r,eval=FALSE}
+```         
 prep_biz_data <- function(df, ssic_codes) {
   
   biz <- df %>%
@@ -107,7 +107,7 @@ prep_biz_data <- function(df, ssic_codes) {
 
 Select the industry and save the file
 
-```{r,eval=FALSE}
+```         
 ssic_fnb   <- c(56111, 56112, 56113)  # Cafes, Food courts, Restaurants
 ssic_ict   <- c(62021, 63120, 58201)  # IT consultancy, web portals, software publishing
 ssic_edu   <- c(85410, 85509)         # Tuition, other education
@@ -137,7 +137,7 @@ sg_boundary <- st_read("data/MasterPlan2019SubzoneBoundaryNoSeaKML.kml") %>%
 ## 3.1 F&B Businesses
 
 ```{r}
-tmap_mode("view")
+tmap_mode("plot")
 tm_shape(sg_boundary) +
   tm_polygons(col = "lightgrey", border.col = "white") +
   tm_shape(biz_fnb) +
@@ -148,7 +148,7 @@ tm_shape(sg_boundary) +
 ## 3.2 Information and Communications Industry
 
 ```{r}
-tmap_mode("view")
+tmap_mode("plot")
 tm_shape(sg_boundary) +
   tm_polygons(col = "lightgrey", border.col = "white") +
   tm_shape(biz_ict) +
@@ -159,19 +159,17 @@ tm_shape(sg_boundary) +
 ## 3.3 Education
 
 ```{r}
-tmap_mode("view")
+tmap_mode("plot")
 tm_shape(sg_boundary) +
   tm_polygons(col = "lightgrey", border.col = "white") +
   tm_shape(biz_edu) +
   tm_dots(col = "green", size = 0.2, alpha = 0.6) +
   tm_layout(title = "Education (2024-2025)")
 ```
+
 ### KDE
 
 ```{r}
-library(spatstat)
-library(stars)
-
 biz_fnb_ppp <- as.ppp(st_coordinates(biz_fnb), 
                       W = as.owin(st_union(sg_boundary)))
 
