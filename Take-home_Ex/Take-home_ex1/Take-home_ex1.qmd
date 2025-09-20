@@ -1,0 +1,219 @@
+---
+title: "Take-home Exercise 1"
+author: "XieHaoyang"
+date-modified: "last-modified"
+execute: 
+  warning: false
+---
+
+# 1. Overview
+
+## 1.1 Background
+
+## 1.2 Objectives
+
+# 2. Data Wrangling
+
+## 2.1 Loading Packages
+
+```{r}
+pacman::p_load(sf, tmap, tidyverse, httr, ggplot2, dplyr, lubridate)
+```
+
+## 2.2 The Data
+
+The datasets are Information on Corporate Entities datasets of ACRA. There are a total of 27 csv files organised alphabetically.
+
+To facilitate data extraction, the original datasets have been merged to generate a new dataset using the following code.
+
+```{r,eval=FALSE}
+folder_path <- "data/aspatial/acra"
+file_list <- list.files(path = folder_path,
+                        pattern = "^ACRA*.*\\.csv$",
+                        full.names = TRUE)
+
+acra_data <- file_list %>%
+  map_dfr(read.csv)
+
+write_rds(acra_data,
+          "data/rds/acra_data.rds")
+```
+
+```{r,eval=FALSE}
+acra_data <- read_rds("D:/XieHaoyang3537/ISSS626-GAA-XieHaoyang/In-class_Ex/In-class_ex2/data/rds/acra_data.rds")
+```
+
+## 2.3 Geocoding
+
+Time Range
+
+```{r,eval=FALSE}
+start_date <- as.Date("2024-01-01")
+end_date   <- as.Date("2025-06-30")
+```
+
+Define functions: filtering + cleaning + geocoding
+
+```{r,eval=FALSE}
+prep_biz_data <- function(df, ssic_codes) {
+  
+  biz <- df %>%
+    select(1:24) %>%
+    filter(primary_ssic_code %in% ssic_codes) %>%
+    rename(date = registration_incorporation_date) %>%
+    mutate(date = as.Date(date)) %>%
+    filter(date >= start_date & date <= end_date) %>%
+    mutate(
+      YEAR = year(date),
+      MONTH_NUM = month(date),
+      MONTH_ABBR = month(date, label = TRUE, abbr = TRUE),
+      postal_code = str_pad(postal_code, width = 6, side = "left", pad = "0")
+    )
+  
+  postcodes <- unique(biz$postal_code)
+  url <- "https://onemap.gov.sg/api/common/elastic/search"
+  
+  found <- data.frame()
+  not_found <- data.frame(postcode = character())
+  
+  for (pc in postcodes) {
+    query <- list(
+      searchVal = pc,
+      returnGeom = "Y",
+      getAddrDetails = "Y",
+      pageNum = "1"
+    )
+    
+    res <- GET(url, query = query)
+    json <- content(res)
+    
+    if (json$found != 0) {
+      df_res <- as.data.frame(json$results, stringsAsFactors = FALSE)
+      df_res$input_postcode <- pc
+      found <- bind_rows(found, df_res)
+    } else {
+      not_found <- bind_rows(not_found, data.frame(postcode = pc))
+    }
+  }
+  
+  biz <- biz %>%
+    left_join(found, by = c("postal_code" = "POSTAL"))
+  
+  biz_sf <- st_as_sf(biz, coords = c("X", "Y"), crs = 3414)
+  
+  return(biz_sf)
+}
+```
+
+Select the industry and save the file
+
+```{r,eval=FALSE}
+ssic_fnb   <- c(56111, 56112, 56113)  # Cafes, Food courts, Restaurants
+ssic_ict   <- c(62021, 63120, 58201)  # IT consultancy, web portals, software publishing
+ssic_edu   <- c(85410, 85509)         # Tuition, other education
+
+biz_fnb <- prep_biz_data(acra_data, ssic_fnb)
+biz_ict <- prep_biz_data(acra_data, ssic_ict)
+biz_edu <- prep_biz_data(acra_data, ssic_edu)
+
+write_rds(biz_fnb, "data/rds/biz_fnb.rds")
+write_rds(biz_ict, "data/rds/biz_ict.rds")
+write_rds(biz_edu, "data/rds/biz_edu.rds")
+```
+
+# 3. Mapping the geospatial data sets
+
+Importing data
+
+```{r}
+biz_fnb <- read_rds("data/rds/biz_fnb.rds")
+biz_ict <- read_rds("data/rds/biz_ict.rds")
+biz_edu <- read_rds("data/rds/biz_edu.rds")
+
+sg_boundary <- st_read("data/MasterPlan2019SubzoneBoundaryNoSeaKML.kml") %>% 
+  st_zm(drop = TRUE, what = "ZM") %>% st_transform(crs = 3414)
+```
+
+## 3.1 F&B Businesses
+
+```{r}
+tmap_mode("view")
+tm_shape(sg_boundary) +
+  tm_polygons(col = "lightgrey", border.col = "white") +
+  tm_shape(biz_fnb) +
+  tm_dots(col = "blue", size = 0.2, alpha = 0.6) +
+  tm_layout(title = "F&B Businesses (2024-2025)")
+```
+
+## 3.2 Information and Communications Industry
+
+```{r}
+tmap_mode("view")
+tm_shape(sg_boundary) +
+  tm_polygons(col = "lightgrey", border.col = "white") +
+  tm_shape(biz_ict) +
+  tm_dots(col = "red", size = 0.2, alpha = 0.6) +
+  tm_layout(title = "Information and Communications Industry (2024-2025)")
+```
+
+## 3.3 Education
+
+```{r}
+tmap_mode("view")
+tm_shape(sg_boundary) +
+  tm_polygons(col = "lightgrey", border.col = "white") +
+  tm_shape(biz_edu) +
+  tm_dots(col = "green", size = 0.2, alpha = 0.6) +
+  tm_layout(title = "Education (2024-2025)")
+```
+### KDE
+
+```{r}
+library(spatstat)
+library(stars)
+
+biz_fnb_ppp <- as.ppp(st_coordinates(biz_fnb), 
+                      W = as.owin(st_union(sg_boundary)))
+
+kde_fnb <- density(biz_fnb_ppp, sigma = 1000)
+
+kde_fnb_stars <- st_as_stars(kde_fnb)
+st_crs(kde_fnb_stars) <- 3414  
+
+tm_shape(kde_fnb_stars) + 
+  tm_raster(alpha = 0.7, palette = "Blues") +
+  tm_shape(sg_boundary) + tm_borders() +
+  tm_layout(title = "KDE Hotspots - F&B Businesses (2024-2025)")
+```
+
+```{r}
+biz_ict_ppp <- as.ppp(st_coordinates(biz_ict), 
+                      W = as.owin(st_union(sg_boundary)))
+
+kde_ict <- density(biz_ict_ppp, sigma = 1000)
+
+kde_ict_stars <- st_as_stars(kde_ict)
+st_crs(kde_ict_stars) <- 3414  
+
+tm_shape(kde_ict_stars) + 
+  tm_raster(alpha = 0.7, palette = "Reds") +
+  tm_shape(sg_boundary) + tm_borders() +
+  tm_layout(title = "KDE Hotspots - Information and Communications Industry (2024-2025)")
+```
+
+```{r}
+biz_edu_ppp <- as.ppp(st_coordinates(biz_edu), 
+                      W = as.owin(st_union(sg_boundary)))
+
+kde_edu <- density(biz_edu_ppp, sigma = 1000)
+
+kde_edu_stars <- st_as_stars(kde_edu)
+st_crs(kde_edu_stars) <- 3414  
+
+tm_shape(kde_edu_stars) + 
+  tm_raster(alpha = 0.7, palette = "Greens") +
+  tm_shape(sg_boundary) + tm_borders() +
+  tm_layout(title = "KDE Hotspots - Education (2024-2025)")
+```
+
+## Distribution in the Time Dimension
