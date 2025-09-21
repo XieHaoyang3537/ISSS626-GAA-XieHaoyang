@@ -6,23 +6,49 @@ execute:
   warning: false
 ---
 
+![](images/3a387ed49ab82e0cc0303868b9ebc2b5.png)
+
 # 1. Overview
 
 ## 1.1 Background
 
+Business formation is a key indicator of urban economic vitality. In Singapore, newly registered businesses across different industries reflect spatial and temporal patterns of economic activities. By leveraging ACRA’s corporate entities dataset, this study explores where and when businesses in F&B, ICT, and Education sectors are established, and whether their spatial distribution shows clustering tendencies
+
 ## 1.2 Objectives
+
+1.  To map the spatial distribution of newly registered businesses in selected industries (F&B, ICT, Education).
+
+2.  To conduct second-order spatial point pattern analysis (e.g., G, F, K, L functions) to assess clustering or randomness.
+
+3.  To compare patterns across industries and discuss potential urban and policy implications.
 
 # 2. Data Wrangling
 
 ## 2.1 Loading Packages
 
++------------+------------------------------------------------------------------------------+
+| Package    | Function                                                                     |
++============+==============================================================================+
+| sf         | Standard framework for handling spatial vector data                          |
++------------+------------------------------------------------------------------------------+
+| tmap       | Package for creating thematic maps and spatial data visualization            |
++------------+------------------------------------------------------------------------------+
+| tidyverse  | Core collection of packages for data science (includes ggplot2, dplyr, etc.) |
++------------+------------------------------------------------------------------------------+
+| httr       | For making HTTP requests and interacting with web APIs                       |
++------------+------------------------------------------------------------------------------+
+| spatstat   | Specialized for spatial point pattern analysis and spatial statistics        |
++------------+------------------------------------------------------------------------------+
+| stars      | Handles raster data and multi-dimensional spatiotemporal arrays              |
++------------+------------------------------------------------------------------------------+
+
 ```{r}
-pacman::p_load(sf, tmap, tidyverse, httr, ggplot2, dplyr, lubridate, spatstat, stars)
+pacman::p_load(sf, tmap, tidyverse, httr, ggplot2, dplyr, spatstat, stars)
 ```
 
 ## 2.2 The Data
 
-The datasets are Information on Corporate Entities datasets of ACRA. There are a total of 27 csv files organised alphabetically.
+The datasets are *Information on Corporate Entities datasets of ACRA*. There are a total of 27 csv files organised alphabetically.
 
 To facilitate data extraction, the original datasets have been merged to generate a new dataset using the following code.
 
@@ -167,7 +193,19 @@ tm_shape(sg_boundary) +
   tm_layout(title = "Education (2024-2025)")
 ```
 
-### KDE
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Insight                                                                                                                                                                                                                  |
++==========================================================================================================================================================================================================================+
+| From the above geospatial map, it can be roughly observed that these three industries are distributed fairly evenly across residential areas in Singapore. They exhibit higher density in the central business district. |
+|                                                                                                                                                                                                                          |
+| Additionally, **F&B businesses** and the **Information and Communications Industry** show scattered distribution in the industrial zones on the western part of the island.                                              |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+# 4. **Kernel Density Estimation**
+
+Using KDE to visualize distribution hotspots and concentration trends across various industries.
+
+## 4.1 F&B Businesses
 
 ```{r}
 biz_fnb_ppp <- as.ppp(st_coordinates(biz_fnb), 
@@ -175,14 +213,20 @@ biz_fnb_ppp <- as.ppp(st_coordinates(biz_fnb),
 
 kde_fnb <- density(biz_fnb_ppp, sigma = 1000)
 
-kde_fnb_stars <- st_as_stars(kde_fnb)
+kde_fnb_stars <- st_as_stars(kde_fnb) * 1e6
 st_crs(kde_fnb_stars) <- 3414  
 
 tm_shape(kde_fnb_stars) + 
-  tm_raster(alpha = 0.7, palette = "Blues") +
-  tm_shape(sg_boundary) + tm_borders() +
+  tm_raster(
+    alpha = 0.7, 
+    palette = "Blues",
+    title = "Density (per km²)"
+    ) +
+  tm_shape(sg_boundary) + tm_borders(lwd = 0.5) +
   tm_layout(title = "KDE Hotspots - F&B Businesses (2024-2025)")
 ```
+
+## 4.2 Information and Communications Industry
 
 ```{r}
 biz_ict_ppp <- as.ppp(st_coordinates(biz_ict), 
@@ -190,14 +234,20 @@ biz_ict_ppp <- as.ppp(st_coordinates(biz_ict),
 
 kde_ict <- density(biz_ict_ppp, sigma = 1000)
 
-kde_ict_stars <- st_as_stars(kde_ict)
+kde_ict_stars <- st_as_stars(kde_ict) * 1e6
 st_crs(kde_ict_stars) <- 3414  
 
 tm_shape(kde_ict_stars) + 
-  tm_raster(alpha = 0.7, palette = "Reds") +
-  tm_shape(sg_boundary) + tm_borders() +
+  tm_raster(
+    alpha = 0.7,
+    palette = "Reds",
+    title = "Density (per km²)"
+    ) +
+  tm_shape(sg_boundary) + tm_borders(lwd = 0.5) +
   tm_layout(title = "KDE Hotspots - Information and Communications Industry (2024-2025)")
 ```
+
+## 4.3 Education
 
 ```{r}
 biz_edu_ppp <- as.ppp(st_coordinates(biz_edu), 
@@ -205,13 +255,92 @@ biz_edu_ppp <- as.ppp(st_coordinates(biz_edu),
 
 kde_edu <- density(biz_edu_ppp, sigma = 1000)
 
-kde_edu_stars <- st_as_stars(kde_edu)
+kde_edu_stars <- st_as_stars(kde_edu) * 1e6
 st_crs(kde_edu_stars) <- 3414  
 
 tm_shape(kde_edu_stars) + 
-  tm_raster(alpha = 0.7, palette = "Greens") +
-  tm_shape(sg_boundary) + tm_borders() +
+  tm_raster(
+    alpha = 0.7,
+    palette = "Greens",
+    title = "Density (per km²)"
+    ) +
+  tm_shape(sg_boundary) + tm_borders(lwd = 0.5) +
   tm_layout(title = "KDE Hotspots - Education (2024-2025)")
 ```
 
-## Distribution in the Time Dimension
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Insight                                                                                                                                                                                                                                                                                                                                                                                   |
++===========================================================================================================================================================================================================================================================================================================================================================================================+
+| **F&B Businesses**: Central areas exhibit significantly higher density clusters, indicating intense F&B activity. In contrast, peripheral regions like the north, parts of the south, and outlying islands have much lower density. This disparity reflects central areas' stronger appeal for F&B businesses, likely due to better commercial environments, foot traffic, and amenities. |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Information and Communications Industry**: It shows a highly concentrated hotspot in the central area, with density reaching 150 - 200 per km². Most other regions have much lower density, below 50 per km², indicating a significant spatial concentration of this industry in the central area.                                                                                      |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Education**: It shows a notable concentration in the central area, with density reaching 25 - 30 per km². Most other regions have lower density, mainly below 10 per km², reflecting that educational institutions are largely clustered in the central part.                                                                                                                           |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+## 5.1 G-function estimation
+
+```{r}
+fnb_sample <- biz_fnb_ppp[sample(1:biz_fnb_ppp$n, 300)]
+# ----------- G-function ------------
+G_fnb <- Gest(fnb_sample, correction = "border")
+plot(G_fnb)
+
+G_fnb_csr <- envelope(fnb_sample, Gest, nsim = 19)
+plot(G_fnb_csr)
+```
+
+Both figures indicate that the point sets corresponding to F&B Business are not completely randomly distributed, but have obvious clustering characteristics.
+
+## 5.2 F-function estimation
+
+```{r}
+# ----------- F-function ------------
+F_fnb <- Fest(fnb_sample, correction = "border")
+plot(F_fnb)
+
+F_fnb_csr <- envelope(fnb_sample, Fest, nsim = 19)
+plot(F_fnb_csr)
+```
+
+The two charts indicate that the point set is not completely randomly distributed, but presents a regular distribution.
+
+## 5.3 K-fucntion estimate
+
+```{r}
+# ----------- K-function ------------
+K_fnb <- Kest(fnb_sample, correction = "Ripley")
+plot(K_fnb, . - r ~ r)
+
+K_fnb_csr <- envelope(fnb_sample, Kest, nsim = 19)
+plot(K_fnb_csr, . - r ~ r)
+```
+
+Clustering characteristics.
+
+## 5.4 L-Fucntion estimation
+
+```{r}
+# ----------- L-function ------------
+L_fnb <- Lest(fnb_sample, correction = "Ripley")
+plot(L_fnb, . - r ~ r)
+
+L_fnb_csr <- envelope(fnb_sample, Lest, nsim = 19)
+plot(L_fnb_csr, . - r ~ r)
+```
+
+Clustering characteristics.
+
+# 6. Conclusion
+
+The spatial and temporal analyses of business formation in Singapore reveal clear clustering tendencies across different industries. F&B businesses, ICT companies, and educational institutions are all significantly concentrated in central areas, particularly within the Central Business District (CBD) and nearby subzones. This reflects the role of the city centre as a hub of commercial, technological, and educational activity, supported by strong infrastructure, accessibility, and market demand.
+
+From a planning perspective, these findings suggest the following implications:
+
+1.  Supporting commercial vitality in central areas The high clustering of F&B and ICT businesses in central Singapore indicates strong agglomeration effects. Urban planners can further strengthen supporting facilities such as transport, utilities, and mixed-use developments to sustain this concentration and enhance competitiveness.
+
+2.  Balancing spatial equity across regions Peripheral areas, especially in the northern and western regions, show much lower densities of new businesses. Targeted incentives (e.g., tax benefits, infrastructure upgrades, flexible zoning) could encourage decentralization of businesses and reduce over-dependence on the CBD.
+
+3.  Evidence-based land use policy The second-order spatial analysis (G, F, K, L functions) confirms that business formation is not random but clustered, providing a statistical foundation for planning interventions. Such insights can guide where to allocate land for commercial, ICT, or educational functions in future Master Plans.
+
+In conclusion, spatial point pattern analysis of business formation offers valuable insights into urban economic dynamics. The integration of geospatial analytics with planning practice can help Singapore achieve a more balanced, resilient, and sustainable urban structure.
