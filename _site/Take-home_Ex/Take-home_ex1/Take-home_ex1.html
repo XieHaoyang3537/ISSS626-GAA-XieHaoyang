@@ -168,6 +168,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../../In-class_Ex/In-class_ex2/In-class_ex2.html">
  <span class="dropdown-text">In-class Exercise 2</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_ex3/In-class_ex3.html">
+ <span class="dropdown-text">In-class Exercise 3</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -176,7 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercise">    
         <li>
-    <a class="dropdown-item" href="../../Take-home_Ex/Take-home_ex1/Take-home_ex1/html">
+    <a class="dropdown-item" href="../../Take-home_Ex/Take-home_ex1/Take-home_ex1.html">
  <span class="dropdown-text">Take-home Exercise 1</span></a>
   </li>  
     </ul>
@@ -221,12 +225,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#fb-businesses" id="toc-fb-businesses" class="nav-link" data-scroll-target="#fb-businesses">3.1 F&amp;B Businesses</a></li>
   <li><a href="#information-and-communications-industry" id="toc-information-and-communications-industry" class="nav-link" data-scroll-target="#information-and-communications-industry">3.2 Information and Communications Industry</a></li>
-  <li><a href="#education" id="toc-education" class="nav-link" data-scroll-target="#education">3.3 Education</a>
+  <li><a href="#education" id="toc-education" class="nav-link" data-scroll-target="#education">3.3 Education</a></li>
+  </ul></li>
+  <li><a href="#kernel-density-estimation" id="toc-kernel-density-estimation" class="nav-link" data-scroll-target="#kernel-density-estimation">4. <strong>Kernel Density Estimation</strong></a>
   <ul class="collapse">
-  <li><a href="#kde" id="toc-kde" class="nav-link" data-scroll-target="#kde">KDE</a></li>
+  <li><a href="#fb-businesses-1" id="toc-fb-businesses-1" class="nav-link" data-scroll-target="#fb-businesses-1">4.1 F&amp;B Businesses</a></li>
+  <li><a href="#information-and-communications-industry-1" id="toc-information-and-communications-industry-1" class="nav-link" data-scroll-target="#information-and-communications-industry-1">4.2 Information and Communications Industry</a></li>
+  <li><a href="#education-1" id="toc-education-1" class="nav-link" data-scroll-target="#education-1">4.3 Education</a></li>
+  <li><a href="#g-function-estimation" id="toc-g-function-estimation" class="nav-link" data-scroll-target="#g-function-estimation">5.1 G-function estimation</a></li>
+  <li><a href="#f-function-estimation" id="toc-f-function-estimation" class="nav-link" data-scroll-target="#f-function-estimation">5.2 F-function estimation</a></li>
+  <li><a href="#k-fucntion-estimate" id="toc-k-fucntion-estimate" class="nav-link" data-scroll-target="#k-fucntion-estimate">5.3 K-fucntion estimate</a></li>
+  <li><a href="#l-fucntion-estimation" id="toc-l-fucntion-estimation" class="nav-link" data-scroll-target="#l-fucntion-estimation">5.4 L-Fucntion estimation</a></li>
   </ul></li>
-  <li><a href="#distribution-in-the-time-dimension" id="toc-distribution-in-the-time-dimension" class="nav-link" data-scroll-target="#distribution-in-the-time-dimension">Distribution in the Time Dimension</a></li>
-  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">6. Conclusion</a></li>
   </ul>
 </nav>
 </nav>
@@ -257,7 +268,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">September 20, 2025</p>
+      <p class="date-modified">September 21, 2025</p>
     </div>
   </div>
     
@@ -268,26 +279,71 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p><img src="images/3a387ed49ab82e0cc0303868b9ebc2b5.png" class="img-fluid"></p>
 <section id="overview" class="level1">
 <h1>1. Overview</h1>
 <section id="background" class="level2">
 <h2 class="anchored" data-anchor-id="background">1.1 Background</h2>
+<p>Business formation is a key indicator of urban economic vitality. In Singapore, newly registered businesses across different industries reflect spatial and temporal patterns of economic activities. By leveraging ACRA’s corporate entities dataset, this study explores where and when businesses in F&amp;B, ICT, and Education sectors are established, and whether their spatial distribution shows clustering tendencies</p>
 </section>
 <section id="objectives" class="level2">
 <h2 class="anchored" data-anchor-id="objectives">1.2 Objectives</h2>
+<ol type="1">
+<li><p>To map the spatial distribution of newly registered businesses in selected industries (F&amp;B, ICT, Education).</p></li>
+<li><p>To conduct second-order spatial point pattern analysis (e.g., G, F, K, L functions) to assess clustering or randomness.</p></li>
+<li><p>To compare patterns across industries and discuss potential urban and policy implications.</p></li>
+</ol>
 </section>
 </section>
 <section id="data-wrangling" class="level1">
 <h1>2. Data Wrangling</h1>
 <section id="loading-packages" class="level2">
 <h2 class="anchored" data-anchor-id="loading-packages">2.1 Loading Packages</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 85%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Package</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sf</td>
+<td>Standard framework for handling spatial vector data</td>
+</tr>
+<tr class="even">
+<td>tmap</td>
+<td>Package for creating thematic maps and spatial data visualization</td>
+</tr>
+<tr class="odd">
+<td>tidyverse</td>
+<td>Core collection of packages for data science (includes ggplot2, dplyr, etc.)</td>
+</tr>
+<tr class="even">
+<td>httr</td>
+<td>For making HTTP requests and interacting with web APIs</td>
+</tr>
+<tr class="odd">
+<td>spatstat</td>
+<td>Specialized for spatial point pattern analysis and spatial statistics</td>
+</tr>
+<tr class="even">
+<td>stars</td>
+<td>Handles raster data and multi-dimensional spatiotemporal arrays</td>
+</tr>
+</tbody>
+</table>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sf, tmap, tidyverse, httr, ggplot2, dplyr, lubridate, spatstat, stars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sf, tmap, tidyverse, httr, ggplot2, dplyr, spatstat, stars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="the-data" class="level2">
 <h2 class="anchored" data-anchor-id="the-data">2.2 The Data</h2>
-<p>The datasets are Information on Corporate Entities datasets of ACRA. There are a total of 27 csv files organised alphabetically.</p>
+<p>The datasets are <em>Information on Corporate Entities datasets of ACRA</em>. There are a total of 27 csv files organised alphabetically.</p>
 <p>To facilitate data extraction, the original datasets have been merged to generate a new dataset using the following code.</p>
 <pre><code>folder_path &lt;- "data/aspatial/acra"
 file_list &lt;- list.files(path = folder_path,
@@ -443,21 +499,46 @@ Geodetic CRS:  WGS 84</code></pre>
 </div>
 </div>
 </div>
-<section id="kde" class="level3">
-<h3 class="anchored" data-anchor-id="kde">KDE</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>From the above geospatial map, it can be roughly observed that these three industries are distributed fairly evenly across residential areas in Singapore. They exhibit higher density in the central business district.</p>
+<p>Additionally, <strong>F&amp;B businesses</strong> and the <strong>Information and Communications Industry</strong> show scattered distribution in the industrial zones on the western part of the island.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="kernel-density-estimation" class="level1">
+<h1>4. <strong>Kernel Density Estimation</strong></h1>
+<p>Using KDE to visualize distribution hotspots and concentration trends across various industries.</p>
+<section id="fb-businesses-1" class="level2">
+<h2 class="anchored" data-anchor-id="fb-businesses-1">4.1 F&amp;B Businesses</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>biz_fnb_ppp <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(<span class="fu">st_coordinates</span>(biz_fnb), </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">W =</span> <span class="fu">as.owin</span>(<span class="fu">st_union</span>(sg_boundary)))</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>kde_fnb <span class="ot">&lt;-</span> <span class="fu">density</span>(biz_fnb_ppp, <span class="at">sigma =</span> <span class="dv">1000</span>)</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>kde_fnb_stars <span class="ot">&lt;-</span> <span class="fu">st_as_stars</span>(kde_fnb)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>kde_fnb_stars <span class="ot">&lt;-</span> <span class="fu">st_as_stars</span>(kde_fnb) <span class="sc">*</span> <span class="fl">1e6</span></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(kde_fnb_stars) <span class="ot">&lt;-</span> <span class="dv">3414</span>  </span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(kde_fnb_stars) <span class="sc">+</span> </span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">palette =</span> <span class="st">"Blues"</span>) <span class="sc">+</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(sg_boundary) <span class="sc">+</span> <span class="fu">tm_borders</span>() <span class="sc">+</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"KDE Hotspots - F&amp;B Businesses (2024-2025)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_raster</span>(</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.7</span>, </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">palette =</span> <span class="st">"Blues"</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Density (per km²)"</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(sg_boundary) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">lwd =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"KDE Hotspots - F&amp;B Businesses (2024-2025)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -466,19 +547,26 @@ Geodetic CRS:  WGS 84</code></pre>
 </div>
 </div>
 </div>
+</section>
+<section id="information-and-communications-industry-1" class="level2">
+<h2 class="anchored" data-anchor-id="information-and-communications-industry-1">4.2 Information and Communications Industry</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>biz_ict_ppp <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(<span class="fu">st_coordinates</span>(biz_ict), </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">W =</span> <span class="fu">as.owin</span>(<span class="fu">st_union</span>(sg_boundary)))</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>kde_ict <span class="ot">&lt;-</span> <span class="fu">density</span>(biz_ict_ppp, <span class="at">sigma =</span> <span class="dv">1000</span>)</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>kde_ict_stars <span class="ot">&lt;-</span> <span class="fu">st_as_stars</span>(kde_ict)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>kde_ict_stars <span class="ot">&lt;-</span> <span class="fu">st_as_stars</span>(kde_ict) <span class="sc">*</span> <span class="fl">1e6</span></span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(kde_ict_stars) <span class="ot">&lt;-</span> <span class="dv">3414</span>  </span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(kde_ict_stars) <span class="sc">+</span> </span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">palette =</span> <span class="st">"Reds"</span>) <span class="sc">+</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(sg_boundary) <span class="sc">+</span> <span class="fu">tm_borders</span>() <span class="sc">+</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"KDE Hotspots - Information and Communications Industry (2024-2025)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_raster</span>(</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.7</span>,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">palette =</span> <span class="st">"Reds"</span>,</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Density (per km²)"</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(sg_boundary) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">lwd =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"KDE Hotspots - Information and Communications Industry (2024-2025)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -487,19 +575,26 @@ Geodetic CRS:  WGS 84</code></pre>
 </div>
 </div>
 </div>
+</section>
+<section id="education-1" class="level2">
+<h2 class="anchored" data-anchor-id="education-1">4.3 Education</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>biz_edu_ppp <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(<span class="fu">st_coordinates</span>(biz_edu), </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">W =</span> <span class="fu">as.owin</span>(<span class="fu">st_union</span>(sg_boundary)))</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>kde_edu <span class="ot">&lt;-</span> <span class="fu">density</span>(biz_edu_ppp, <span class="at">sigma =</span> <span class="dv">1000</span>)</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>kde_edu_stars <span class="ot">&lt;-</span> <span class="fu">st_as_stars</span>(kde_edu)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>kde_edu_stars <span class="ot">&lt;-</span> <span class="fu">st_as_stars</span>(kde_edu) <span class="sc">*</span> <span class="fl">1e6</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(kde_edu_stars) <span class="ot">&lt;-</span> <span class="dv">3414</span>  </span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(kde_edu_stars) <span class="sc">+</span> </span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">palette =</span> <span class="st">"Greens"</span>) <span class="sc">+</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(sg_boundary) <span class="sc">+</span> <span class="fu">tm_borders</span>() <span class="sc">+</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"KDE Hotspots - Education (2024-2025)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_raster</span>(</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.7</span>,</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">palette =</span> <span class="st">"Greens"</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Density (per km²)"</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(sg_boundary) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">lwd =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"KDE Hotspots - Education (2024-2025)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -508,13 +603,176 @@ Geodetic CRS:  WGS 84</code></pre>
 </div>
 </div>
 </div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>F&amp;B Businesses</strong>: Central areas exhibit significantly higher density clusters, indicating intense F&amp;B activity. In contrast, peripheral regions like the north, parts of the south, and outlying islands have much lower density. This disparity reflects central areas’ stronger appeal for F&amp;B businesses, likely due to better commercial environments, foot traffic, and amenities.</td>
+</tr>
+<tr class="even">
+<td><strong>Information and Communications Industry</strong>: It shows a highly concentrated hotspot in the central area, with density reaching 150 - 200 per km². Most other regions have much lower density, below 50 per km², indicating a significant spatial concentration of this industry in the central area.</td>
+</tr>
+<tr class="odd">
+<td><strong>Education</strong>: It shows a notable concentration in the central area, with density reaching 25 - 30 per km². Most other regions have lower density, mainly below 10 per km², reflecting that educational institutions are largely clustered in the central part.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="g-function-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="g-function-estimation">5.1 G-function estimation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fnb_sample <span class="ot">&lt;-</span> biz_fnb_ppp[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>biz_fnb_ppp<span class="sc">$</span>n, <span class="dv">300</span>)]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------- G-function ------------</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>G_fnb <span class="ot">&lt;-</span> <span class="fu">Gest</span>(fnb_sample, <span class="at">correction =</span> <span class="st">"border"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(G_fnb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex1_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>G_fnb_csr <span class="ot">&lt;-</span> <span class="fu">envelope</span>(fnb_sample, Gest, <span class="at">nsim =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generating 19 simulations of CSR  ...
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
+19.
+
+Done.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(G_fnb_csr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex1_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Both figures indicate that the point sets corresponding to F&amp;B Business are not completely randomly distributed, but have obvious clustering characteristics.</p>
+</section>
+<section id="f-function-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="f-function-estimation">5.2 F-function estimation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------- F-function ------------</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>F_fnb <span class="ot">&lt;-</span> <span class="fu">Fest</span>(fnb_sample, <span class="at">correction =</span> <span class="st">"border"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(F_fnb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex1_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>F_fnb_csr <span class="ot">&lt;-</span> <span class="fu">envelope</span>(fnb_sample, Fest, <span class="at">nsim =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generating 19 simulations of CSR  ...
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
+19.
+
+Done.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(F_fnb_csr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex1_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The two charts indicate that the point set is not completely randomly distributed, but presents a regular distribution.</p>
+</section>
+<section id="k-fucntion-estimate" class="level2">
+<h2 class="anchored" data-anchor-id="k-fucntion-estimate">5.3 K-fucntion estimate</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------- K-function ------------</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>K_fnb <span class="ot">&lt;-</span> <span class="fu">Kest</span>(fnb_sample, <span class="at">correction =</span> <span class="st">"Ripley"</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(K_fnb, . <span class="sc">-</span> r <span class="sc">~</span> r)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex1_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>K_fnb_csr <span class="ot">&lt;-</span> <span class="fu">envelope</span>(fnb_sample, Kest, <span class="at">nsim =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generating 19 simulations of CSR  ...
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
+19.
+
+Done.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(K_fnb_csr, . <span class="sc">-</span> r <span class="sc">~</span> r)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex1_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Clustering characteristics.</p>
+</section>
+<section id="l-fucntion-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="l-fucntion-estimation">5.4 L-Fucntion estimation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------- L-function ------------</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>L_fnb <span class="ot">&lt;-</span> <span class="fu">Lest</span>(fnb_sample, <span class="at">correction =</span> <span class="st">"Ripley"</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_fnb, . <span class="sc">-</span> r <span class="sc">~</span> r)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex1_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>L_fnb_csr <span class="ot">&lt;-</span> <span class="fu">envelope</span>(fnb_sample, Lest, <span class="at">nsim =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generating 19 simulations of CSR  ...
+1, 2,  [3:03 remaining] 3,
+ [3:23 remaining] 4,  [3:11 remaining] 5,  [3:01 remaining] 6,
+ [2:50 remaining] 7,  [2:36 remaining] 8,  [2:24 remaining] 9,
+ [2:10 remaining] 10,  [1:58 remaining] 11,  [1:46 remaining] 12,
+ [1:32 remaining] 13,  [1:19 remaining] 14,  [1:06 remaining] 15,
+ [54 sec remaining] 16,  [40 sec remaining] 17,  [26 sec remaining] 18,
+ [13 sec remaining] 
+19.
+
+Done.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_fnb_csr, . <span class="sc">-</span> r <span class="sc">~</span> r)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex1_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Clustering characteristics.</p>
 </section>
 </section>
-<section id="distribution-in-the-time-dimension" class="level2">
-<h2 class="anchored" data-anchor-id="distribution-in-the-time-dimension">Distribution in the Time Dimension</h2>
+<section id="conclusion" class="level1">
+<h1>6. Conclusion</h1>
+<p>The spatial and temporal analyses of business formation in Singapore reveal clear clustering tendencies across different industries. F&amp;B businesses, ICT companies, and educational institutions are all significantly concentrated in central areas, particularly within the Central Business District (CBD) and nearby subzones. This reflects the role of the city centre as a hub of commercial, technological, and educational activity, supported by strong infrastructure, accessibility, and market demand.</p>
+<p>From a planning perspective, these findings suggest the following implications:</p>
+<ol type="1">
+<li><p>Supporting commercial vitality in central areas The high clustering of F&amp;B and ICT businesses in central Singapore indicates strong agglomeration effects. Urban planners can further strengthen supporting facilities such as transport, utilities, and mixed-use developments to sustain this concentration and enhance competitiveness.</p></li>
+<li><p>Balancing spatial equity across regions Peripheral areas, especially in the northern and western regions, show much lower densities of new businesses. Targeted incentives (e.g., tax benefits, infrastructure upgrades, flexible zoning) could encourage decentralization of businesses and reduce over-dependence on the CBD.</p></li>
+<li><p>Evidence-based land use policy The second-order spatial analysis (G, F, K, L functions) confirms that business formation is not random but clustered, providing a statistical foundation for planning interventions. Such insights can guide where to allocate land for commercial, ICT, or educational functions in future Master Plans.</p></li>
+</ol>
+<p>In conclusion, spatial point pattern analysis of business formation offers valuable insights into urban economic dynamics. The integration of geospatial analytics with planning practice can help Singapore achieve a more balanced, resilient, and sustainable urban structure.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
