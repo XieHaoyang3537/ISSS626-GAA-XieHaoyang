@@ -84,4 +84,3 @@ tm_shape(hunan_gastat) +
           style = "quantile") +
   tm_borders(alpha = 0.5)
 ```
-

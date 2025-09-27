@@ -1,0 +1,103 @@
+---
+title: "In-class_ex4"
+format: html
+---
+
+## Installation
+
+```{r,eval=FALSE}
+install.packages("sfdep")
+```
+
+## Getting started
+
+```{r}
+pacman::p_load(sf, spdep, sfdep, tmap, tidyverse)
+```
+
+## Importing the data
+
+```{r}
+hunan <- st_read(dsn = "D:/XieHaoyang3537/ISSS626-GAA-XieHaoyang/Hands-on_Ex/Hands-on_ex04/data/geospatial", 
+                 layer = "Hunan")
+```
+
+```{r}
+hunan2012 <- read_csv("D:/XieHaoyang3537/ISSS626-GAA-XieHaoyang/Hands-on_Ex/Hands-on_ex04/data/aspatial/Hunan_2012.csv")
+```
+
+```{r}
+hunan <- left_join(hunan,hunan2012) %>%
+  select(1:4, 7, 15)
+```
+
+```{r}
+equal <- tm_shape(hunan) +
+  tm_polygons(fill = "GDPPC",
+              fill.scale = tm_scale_intervals(
+                style = "equal",
+                n = 5,
+                values = "brewer.blues"),
+              fill.legend = tm_legend(
+                title = "GDPPC",
+                position = tm_pos_in(
+                  "left", "bottom"))) + 
+  tm_borders(fill_alpha = 0.5) +
+  tm_title("Equal interval classification")
+
+quantile <- tm_shape(hunan) +
+  tm_polygons(fill = "GDPPC",
+              fill.scale = tm_scale_intervals(
+                style = "quantile",
+                n = 5,
+                values = "brewer.blues"),
+              fill.legend = tm_legend(
+                title = "GDPPC",
+                position = tm_pos_in(
+                  "left", "bottom"))) + 
+  tm_borders(fill_alpha = 0.5) +
+  tm_title("Quantile interval classification")
+
+tmap_arrange(equal, 
+             quantile, 
+             asp=1, 
+             ncol=2)
+```
+
+## Global Measures of Spatial Association
+
+### Computing Contiguity Spatial Weights
+
+```{r}
+wm_q <- poly2nb(hunan,
+                queen = TRUE)
+summary(wm_q)
+```
+
+### Row-standardised weights matrix
+
+```{r}
+rswm_q <- nb2listw(wm_q,
+                   style = "W",
+                   zero.policy = TRUE)
+rswm_q
+```
+
+```{r}
+wm_q <- hunan %>%
+  mutate(nb = st_contiguity(geometry),
+         wt = st_weights(nb,
+                         style = "W"),
+         .before = 1)
+```
+
+### performing Global Moran'l permutation test
+
+```{r}
+set.seed(1234)
+
+global_moran_perm(wm_q$GDPPC,
+                  wm_q$nb,
+                  wm_q$wt,
+                nsim = 99)
+```

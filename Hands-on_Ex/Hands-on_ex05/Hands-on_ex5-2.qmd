@@ -317,7 +317,7 @@ hunan_adw <- hunan %>%
     .before = 1)
 ```
 
-### Computing local Gi*
+### Computing local Gi\*
 
 ```{r}
 HCSA_fdw <- hunan_fdw %>%
@@ -330,7 +330,7 @@ HCSA_fdw <- hunan_fdw %>%
 
 ### Preparing and Visualising HCSA Map
 
-#### Mapping Gi* with fix distance weights
+#### Mapping Gi\* with fix distance weights
 
 ```{r}
 tm_shape(HCSA_fdw) +
@@ -346,7 +346,7 @@ tm_shape(HCSA_fdw) +
   tm_title("Gi* of GDPPC (Fixed Bandwidth d = 60799.91m)")
 ```
 
-#### Mapping local Gi* p-values
+#### Mapping local Gi\* p-values
 
 ```{r}
 tm_shape(HCSA_fdw) +
@@ -361,7 +361,7 @@ tm_shape(HCSA_fdw) +
   tm_title("p-values of local Gi* of GDPPC (Fixed distance)")
 ```
 
-#### Mapping both Gi* values and p-values
+#### Mapping both Gi\* values and p-values
 
 ```{r}
 Gi_star_map <- tm_shape(HCSA_fdw) +
@@ -432,4 +432,3 @@ HCSA_map
 ```{r}
 tmap_arrange(Gi_star_map, HCSA_map, asp=1, ncol=2)
 ```
-
