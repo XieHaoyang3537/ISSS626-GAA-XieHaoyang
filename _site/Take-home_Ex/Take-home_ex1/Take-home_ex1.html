@@ -180,6 +180,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../../In-class_Ex/In-class_ex3/In-class_ex3.html">
  <span class="dropdown-text">In-class Exercise 3</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_ex4/In-class_ex4.html">
+ <span class="dropdown-text">In-class Exercise 4</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -245,7 +249,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#k-fucntion-estimate" id="toc-k-fucntion-estimate" class="nav-link" data-scroll-target="#k-fucntion-estimate">5.3 K-fucntion estimate</a></li>
   <li><a href="#l-fucntion-estimation" id="toc-l-fucntion-estimation" class="nav-link" data-scroll-target="#l-fucntion-estimation">5.4 L-Fucntion estimation</a></li>
   </ul></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">6. Conclusion</a></li>
+  <li><a href="#spatio-temporal-analysis" id="toc-spatio-temporal-analysis" class="nav-link" data-scroll-target="#spatio-temporal-analysis">7. Spatio-temporal Analysis</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">8. Conclusion</a></li>
   </ul>
 </nav>
 </nav>
@@ -276,7 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">September 21, 2025</p>
+      <p class="date-modified">September 27, 2025</p>
     </div>
   </div>
     
@@ -309,8 +314,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="loading-packages">2.1 Loading Packages</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 14%">
-<col style="width: 85%">
+<col style="width: 15%">
+<col style="width: 84%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -714,7 +719,13 @@ Done.</code></pre>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>K_fnb_csr <span class="ot">&lt;-</span> <span class="fu">envelope</span>(fnb_sample, Kest, <span class="at">nsim =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Generating 19 simulations of CSR  ...
-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
+1, 2,  [4:04 remaining] 3,
+ [3:32 remaining] 4,  [3:19 remaining] 5,  [3:05 remaining] 6,
+ [2:53 remaining] 7,  [2:43 remaining] 8,  [2:27 remaining] 9,
+ [2:16 remaining] 10,  [2:00 remaining] 11,  [1:49 remaining] 12,
+ [1:34 remaining] 13,  [1:20 remaining] 14,  [1:06 remaining] 15,
+ [54 sec remaining] 16,  [40 sec remaining] 17,  [27 sec remaining] 18,
+ [13 sec remaining] 
 19.
 
 Done.</code></pre>
@@ -746,12 +757,12 @@ Done.</code></pre>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>L_fnb_csr <span class="ot">&lt;-</span> <span class="fu">envelope</span>(fnb_sample, Lest, <span class="at">nsim =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Generating 19 simulations of CSR  ...
-1, 2,  [3:03 remaining] 3,
- [3:23 remaining] 4,  [3:11 remaining] 5,  [3:01 remaining] 6,
- [2:50 remaining] 7,  [2:36 remaining] 8,  [2:24 remaining] 9,
- [2:10 remaining] 10,  [1:58 remaining] 11,  [1:46 remaining] 12,
- [1:32 remaining] 13,  [1:19 remaining] 14,  [1:06 remaining] 15,
- [54 sec remaining] 16,  [40 sec remaining] 17,  [26 sec remaining] 18,
+1, 2,  [4:42 remaining] 3,
+ [3:53 remaining] 4,  [3:28 remaining] 5,  [3:15 remaining] 6,
+ [2:56 remaining] 7,  [2:39 remaining] 8,  [2:25 remaining] 9,
+ [2:12 remaining] 10,  [1:59 remaining] 11,  [1:47 remaining] 12,
+ [1:35 remaining] 13,  [1:23 remaining] 14,  [1:08 remaining] 15,
+ [55 sec remaining] 16,  [41 sec remaining] 17,  [27 sec remaining] 18,
  [13 sec remaining] 
 19.
 
@@ -769,8 +780,58 @@ Done.</code></pre>
 <p>Clustering characteristics.</p>
 </section>
 </section>
+<section id="spatio-temporal-analysis" class="level1">
+<h1>7. Spatio-temporal Analysis</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>biz_all <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  biz_fnb <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">industry =</span> <span class="st">"F&amp;B"</span>),</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  biz_ict <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">industry =</span> <span class="st">"ICT"</span>),</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  biz_edu <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">industry =</span> <span class="st">"Education"</span>)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>biz_trend <span class="ot">&lt;-</span> biz_all <span class="sc">%&gt;%</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(YEAR, MONTH_ABBR, industry) <span class="sc">%&gt;%</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(biz_trend, <span class="fu">aes</span>(<span class="at">x =</span> MONTH_ABBR, <span class="at">y =</span> count, <span class="at">color =</span> industry, <span class="at">group =</span> industry)) <span class="sc">+</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>YEAR, <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Monthly Business Registrations by Industry"</span>,</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Month"</span>, <span class="at">y =</span> <span class="st">"Number of New Businesses"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex1_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>The monthly trends of new business registrations (2024–2025) show clear temporal variations across industries:</p>
+<ol type="1">
+<li><p>ICT consistently records the highest number of new businesses, with several peaks in 2024 followed by a more stable trend in 2025.</p></li>
+<li><p>F&amp;B exhibits moderate but more fluctuating growth, with seasonal spikes around mid-year and year-end.</p></li>
+<li><p>Education remains the smallest sector, showing steady but lower-volume registrations throughout the period.</p></li>
+</ol>
+<p>Overall, the temporal patterns reinforce the earlier spatial findings: central areas attract the majority of new businesses, and this concentration intensifies during months with higher registration volumes. This highlights a spatio-temporal clustering effect where both time and geography amplify business activity in Singapore’s core urban zones.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="conclusion" class="level1">
-<h1>6. Conclusion</h1>
+<h1>8. Conclusion</h1>
 <p>The spatial and temporal analyses of business formation in Singapore reveal clear clustering tendencies across different industries. F&amp;B businesses, ICT companies, and educational institutions are all significantly concentrated in central areas, particularly within the Central Business District (CBD) and nearby subzones. This reflects the role of the city centre as a hub of commercial, technological, and educational activity, supported by strong infrastructure, accessibility, and market demand.</p>
 <p>From a planning perspective, these findings suggest the following implications:</p>
 <ol type="1">
