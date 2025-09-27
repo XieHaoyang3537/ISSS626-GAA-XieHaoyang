@@ -26,21 +26,21 @@ Business formation is a key indicator of urban economic vitality. In Singapore, 
 
 ## 2.1 Loading Packages
 
-+------------+------------------------------------------------------------------------------+
-| Package    | Function                                                                     |
-+============+==============================================================================+
-| sf         | Standard framework for handling spatial vector data                          |
-+------------+------------------------------------------------------------------------------+
-| tmap       | Package for creating thematic maps and spatial data visualization            |
-+------------+------------------------------------------------------------------------------+
-| tidyverse  | Core collection of packages for data science (includes ggplot2, dplyr, etc.) |
-+------------+------------------------------------------------------------------------------+
-| httr       | For making HTTP requests and interacting with web APIs                       |
-+------------+------------------------------------------------------------------------------+
-| spatstat   | Specialized for spatial point pattern analysis and spatial statistics        |
-+------------+------------------------------------------------------------------------------+
-| stars      | Handles raster data and multi-dimensional spatiotemporal arrays              |
-+------------+------------------------------------------------------------------------------+
++-------------+------------------------------------------------------------------------------+
+| Package     | Function                                                                     |
++=============+==============================================================================+
+| sf          | Standard framework for handling spatial vector data                          |
++-------------+------------------------------------------------------------------------------+
+| tmap        | Package for creating thematic maps and spatial data visualization            |
++-------------+------------------------------------------------------------------------------+
+| tidyverse   | Core collection of packages for data science (includes ggplot2, dplyr, etc.) |
++-------------+------------------------------------------------------------------------------+
+| httr        | For making HTTP requests and interacting with web APIs                       |
++-------------+------------------------------------------------------------------------------+
+| spatstat    | Specialized for spatial point pattern analysis and spatial statistics        |
++-------------+------------------------------------------------------------------------------+
+| stars       | Handles raster data and multi-dimensional spatiotemporal arrays              |
++-------------+------------------------------------------------------------------------------+
 
 ```{r}
 pacman::p_load(sf, tmap, tidyverse, httr, ggplot2, dplyr, spatstat, stars)
@@ -331,7 +331,43 @@ plot(L_fnb_csr, . - r ~ r)
 
 Clustering characteristics.
 
-# 6. Conclusion
+# 7. Spatio-temporal Analysis
+
+```{r}
+biz_all <- bind_rows(
+  biz_fnb %>% mutate(industry = "F&B"),
+  biz_ict %>% mutate(industry = "ICT"),
+  biz_edu %>% mutate(industry = "Education")
+)
+
+biz_trend <- biz_all %>%
+  st_drop_geometry() %>%
+  group_by(YEAR, MONTH_ABBR, industry) %>%
+  summarise(count = n())
+
+ggplot(biz_trend, aes(x = MONTH_ABBR, y = count, color = industry, group = industry)) +
+  geom_line(size = 1) + geom_point() +
+  facet_wrap(~YEAR, scales = "free_x") +
+  theme_minimal() +
+  labs(title = "Monthly Business Registrations by Industry",
+       x = "Month", y = "Number of New Businesses")
+```
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Insight                                                                                                                                                                                                                                                                                                                                                      |
++==============================================================================================================================================================================================================================================================================================================================================================+
+| The monthly trends of new business registrations (2024–2025) show clear temporal variations across industries:                                                                                                                                                                                                                                               |
+|                                                                                                                                                                                                                                                                                                                                                              |
+| 1.  ICT consistently records the highest number of new businesses, with several peaks in 2024 followed by a more stable trend in 2025.                                                                                                                                                                                                                       |
+|                                                                                                                                                                                                                                                                                                                                                              |
+| 2.  F&B exhibits moderate but more fluctuating growth, with seasonal spikes around mid-year and year-end.                                                                                                                                                                                                                                                    |
+|                                                                                                                                                                                                                                                                                                                                                              |
+| 3.  Education remains the smallest sector, showing steady but lower-volume registrations throughout the period.                                                                                                                                                                                                                                              |
+|                                                                                                                                                                                                                                                                                                                                                              |
+| Overall, the temporal patterns reinforce the earlier spatial findings: central areas attract the majority of new businesses, and this concentration intensifies during months with higher registration volumes. This highlights a spatio-temporal clustering effect where both time and geography amplify business activity in Singapore’s core urban zones. |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+# 8. Conclusion
 
 The spatial and temporal analyses of business formation in Singapore reveal clear clustering tendencies across different industries. F&B businesses, ICT companies, and educational institutions are all significantly concentrated in central areas, particularly within the Central Business District (CBD) and nearby subzones. This reflects the role of the city centre as a hub of commercial, technological, and educational activity, supported by strong infrastructure, accessibility, and market demand.
 
