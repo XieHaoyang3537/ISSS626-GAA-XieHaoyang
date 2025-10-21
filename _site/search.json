@@ -985,5 +985,180 @@
     "title": "In-class Exercise 6",
     "section": "Region Observatio",
     "text": "Region Observatio\n\ntampines &lt;- mpsz_svy21 %&gt;%\n  filter(PLN_AREA_N == \"TAMPINES\")\n\n\npts_tampines &lt;- st_filter(\n  condo_resale.sf.adaptive,\n  tampines,\n  .predicate = st_within\n)\n\n\ntmap_mode(\"plot\")\n\nℹ tmap mode set to \"plot\".\n\ntm_shape(tampines) +\n  tm_polygons(fill_alpha = 0.1, border.col = \"gray60\") +\ntm_shape(pts_tampines) +\n  tm_dots(col = \"Local_R2\", border.col = \"gray60\", border.lwd = 1)\n\n\n── tmap v3 code detected ───────────────────────────────────────────────────────\n\n\n\n\n\n\n\n\n\nThe Local_R2 values of condos in Tampines are mostly in a relatively high range (above 0.9), and their spatial distribution is clustered."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#background",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#background",
+    "title": "Take-home Exercise 2",
+    "section": "1.1 Background",
+    "text": "1.1 Background\nSingapore’s dense urban environment and heavy reliance on public transport make efficient bus systems critical. While smart card and GPS data from LTA provide detailed trip records, traditional analysis often overlooks hidden spatial-temporal patterns. Advanced geostatistical methods like Local Spatial Autocorrelation (LMSA) and Emerging Hot Spot Analysis (EHSA) can uncover these patterns, helping optimize routes and resource allocation.\nThis study uses August 2025 bus trip data to analyze passenger volumes across a 375m hexagonal grid, identifying:\n\nSpatial clusters (hotspots/coldspots) of demand\nTemporal trends (e.g., peak-hour intensification)\nAnomalies for targeted improvements"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#objectives",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#objectives",
+    "title": "Take-home Exercise 2",
+    "section": "1.2 Objectives",
+    "text": "1.2 Objectives\n\n​​Detect spatial patterns​​ in bus trip generation using:\n\nLocal Moran’s I, Geary’s C, and Getis-Ord Gi​*​\nHexagon-level (375m) hotspots/coldspots\n\n​​Analyze temporal trends​​ via EHSA:\n\nClassify demand changes (Intensifying, Sporadic, Diminishing)\nFocus on peak hours (weekday 6–9am, 5–8pm; weekend 11am–8pm)\n\n​​Provide actionable insights​​ for:\n\nBus lane prioritization\nResource allocation to underserved areas"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#loading-packages",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#loading-packages",
+    "title": "Take-home Exercise 2",
+    "section": "2.1 Loading Packages",
+    "text": "2.1 Loading Packages\n\n\n\n\n\n\n\nPackages\nFunction\n\n\n\n\nsf\nCore package for reading, processing, manipulating, and analyzing vector spatial data in R.\n\n\ntidyvers\nA collection of data science tools for cleaning, visualizing, and importing data following the “tidy data” principle.\n\n\ntmap\nFacilitates static and interactive spatial data visualization with a concise, customizable syntax.\n\n\nsfdep\nSpatial dependence analysis tool built on sf, offering local spatial autocorrelation tests and spatial weight matrix construction.\n\n\nknitr\nEnables dynamic document generation by integrating R code, text, and plots into PDF, HTML, and Word formats.\n\n\nlubridate\nSimplifies date/time data handling, including parsing, conversion, arithmetic operations, and time zone adjustments.\n\n\nunits\nAdds physical units to numerical data and supports unit-aware arithmetic operations and conversions.\n\n\nspdep\nClassic spatial dependence analysis package for constructing spatial weight matrices and conducting global/local spatial autocorrelation tests (compatible with traditional spatial data formats).\n\n\ntmaptools\nAuxiliary toolset for tmap, providing spatial data preprocessing, base map loading, and legend optimization.\n\n\nspcetime\nSupports storage, processing, and analysis of spatiotemporal data, enabling creation and querying of spatiotemporal objects.\n\n\n\n\npacman::p_load(sf, tidyverse, tmap, sfdep, knitr,lubridate, units, spdep, tmaptools, spacetime)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#the-data",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#the-data",
+    "title": "Take-home Exercise 2",
+    "section": "2.2 The Data",
+    "text": "2.2 The Data\nThe data comes from DataMall | Land Transport Authority (LTA) . Before importing, the data has been processed.\n\n2.2.1 Importing geospatial data\n\nmpsz = st_read(dsn = \"data/geospatial\", \n               layer = \"MP14_SUBZONE_WEB_PL\")\n\nReading layer `MP14_SUBZONE_WEB_PL' from data source \n  `D:\\XieHaoyang3537\\ISSS626-GAA-XieHaoyang\\Take-home_Ex\\Take-home_ex2\\data\\geospatial' \n  using driver `ESRI Shapefile'\nSimple feature collection with 323 features and 15 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 2667.538 ymin: 15748.72 xmax: 56396.44 ymax: 50256.33\nProjected CRS: SVY21\n\nmpsz &lt;- st_transform(mpsz, 3414)\n\n\n\n2.2.2 Importing Bus Stop data\n\nBusStop = st_read(dsn = \"D:/XieHaoyang3537/ISSS626-GAA-XieHaoyang/In-class_Ex/In-class_ex5/data/LTADataMall/\",\n                  layer = \"BusStop\")\n\nReading layer `BusStop' from data source \n  `D:\\XieHaoyang3537\\ISSS626-GAA-XieHaoyang\\In-class_Ex\\In-class_ex5\\data\\LTAdataMall' \n  using driver `ESRI Shapefile'\nSimple feature collection with 5172 features and 2 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 3970.122 ymin: 26482.1 xmax: 48285.52 ymax: 52983.82\nProjected CRS: SVY21\n\nBusStop &lt;- st_transform(BusStop, 3414)\n\n\nodbus &lt;- read_csv(\"D:/XieHaoyang3537/ISSS626-GAA-XieHaoyang/In-class_Ex/In-class_ex5/data/LTADataMall/origin_destination_bus_202508.csv\")"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#extractting-bus-stops-within-singapore",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#extractting-bus-stops-within-singapore",
+    "title": "Take-home Exercise 2",
+    "section": "2.3 Extractting Bus Stops within Singapore",
+    "text": "2.3 Extractting Bus Stops within Singapore\n\nBusStop_in_SG &lt;- st_join(\n  BusStop, mpsz,\n  join = st_within,\n  left = FALSE)\n\n\ntm_shape(mpsz) + \n  tm_polygons() +\ntm_shape(BusStop_in_SG) +\n  tm_dots()"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#generate-a-375m-hexagonal-grid",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#generate-a-375m-hexagonal-grid",
+    "title": "Take-home Exercise 2",
+    "section": "3.1 Generate a 375m hexagonal grid",
+    "text": "3.1 Generate a 375m hexagonal grid\n\nhexagon &lt;- st_make_grid(\n  mpsz,\n  cellsize = 375,\n  what = \"polygons\",\n  square = FALSE\n) %&gt;%\n  st_sf() %&gt;%\n  st_intersection(mpsz)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#filtering-hexagons-with-bus-stops",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#filtering-hexagons-with-bus-stops",
+    "title": "Take-home Exercise 2",
+    "section": "3.2 Filtering hexagons with bus stops",
+    "text": "3.2 Filtering hexagons with bus stops\n\nhexagon$n_collisions = \n  lengths(st_intersects(\n    hexagon, BusStop_in_SG))\n\nhexagon &lt;- filter(hexagon, n_collisions &gt; 0)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#assigning-ids-to-each-hexagon",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#assigning-ids-to-each-hexagon",
+    "title": "Take-home Exercise 2",
+    "section": "3.3 Assigning ids to each hexagon",
+    "text": "3.3 Assigning ids to each hexagon\n\nhexagon &lt;- hexagon %&gt;%\n  select(, - n_collisions)\n\nhexagon$HEX_ID &lt;- sprintf(\n  \"H%04d\", seq_len(nrow(hexagon))) %&gt;%\n  as.factor()\n\nkable(head(hexagon))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOBJECTID\nSUBZONE_NO\nSUBZONE_N\nSUBZONE_C\nCA_IND\nPLN_AREA_N\nPLN_AREA_C\nREGION_N\nREGION_C\nINC_CRC\nFMEL_UPD_D\nX_ADDR\nY_ADDR\nSHAPE_Leng\nSHAPE_Area\ngeometry\nHEX_ID\n\n\n\n\n1\n1\nMARINA SOUTH\nMSSZ01\nY\nMARINA SOUTH\nMS\nCENTRAL REGION\nCR\n5ED7EB253F99252E\n2014-12-05\n31595.84\n29220.19\n5267.381\n1630379.3\nPOLYGON ((30980.04 28847.36…\nH0001\n\n\n1\n1\nMARINA SOUTH\nMSSZ01\nY\nMARINA SOUTH\nMS\nCENTRAL REGION\nCR\n5ED7EB253F99252E\n2014-12-05\n31595.84\n29220.19\n5267.381\n1630379.3\nPOLYGON ((31355.04 28630.85…\nH0002\n\n\n1\n1\nMARINA SOUTH\nMSSZ01\nY\nMARINA SOUTH\nMS\nCENTRAL REGION\nCR\n5ED7EB253F99252E\n2014-12-05\n31595.84\n29220.19\n5267.381\n1630379.3\nPOLYGON ((31542.54 28955.61…\nH0003\n\n\n1\n1\nMARINA SOUTH\nMSSZ01\nY\nMARINA SOUTH\nMS\nCENTRAL REGION\nCR\n5ED7EB253F99252E\n2014-12-05\n31595.84\n29220.19\n5267.381\n1630379.3\nPOLYGON ((31917.54 28955.61…\nH0004\n\n\n2\n1\nPEARL’S HILL\nOTSZ01\nY\nOUTRAM\nOT\nCENTRAL REGION\nCR\n8C7149B9EB32EEFC\n2014-12-05\n28679.06\n29782.05\n3506.107\n559816.2\nMULTIPOLYGON (((28161 29825…\nH0005\n\n\n2\n1\nPEARL’S HILL\nOTSZ01\nY\nOUTRAM\nOT\nCENTRAL REGION\nCR\n8C7149B9EB32EEFC\n2014-12-05\n28679.06\n29782.05\n3506.107\n559816.2\nPOLYGON ((28283.74 29538.04…\nH0006"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#view-hexagon-and-busstop-distribution",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#view-hexagon-and-busstop-distribution",
+    "title": "Take-home Exercise 2",
+    "section": "3.4 View hexagon and BusStop distribution",
+    "text": "3.4 View hexagon and BusStop distribution\n\n# View hexagon and BusStop distribution\ntmap_mode(\"plot\")\ntm_shape(mpsz) + \n  tm_polygons(col = \"gray95\", border.col = \"gray80\") +\ntm_shape(hexagon) +\n  tm_borders(col = \"darkorange\", lwd = 0.6) +\ntm_shape(BusStop) +\n  tm_dots(col = \"blue\", size = 0.05)\n\n\n\n\n\n\n\n\nThis map shows the final analytical hexagon grid (black dots) derived from the initial hexagonal framework (orange lines). The dense distribution of points across Singapore’s outline confirms successful spatial indexing, where each dot represents a hexagon cell containing at least one bus stop (as filtered in Step 3.2). The clustering of dots in central areas (e.g., CBD) reflects higher bus stop density, while sparser dots in peripheral regions (e.g., Lim Chu Kang) indicate lower coverage. The hexagon grid now serves as the spatial unit for subsequent trip volume aggregation and analysis."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#calculate-the-total-number-of-passengers-for-each-origin_pt_code-departure-station",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#calculate-the-total-number-of-passengers-for-each-origin_pt_code-departure-station",
+    "title": "Take-home Exercise 2",
+    "section": "4.1 Calculate the total number of passengers for each ORIGIN_PT_CODE (departure station)",
+    "text": "4.1 Calculate the total number of passengers for each ORIGIN_PT_CODE (departure station)\n\norigin_trips &lt;- odbus %&gt;%\n  group_by(ORIGIN_PT_CODE) %&gt;%\n  summarise(total_trips = sum(TOTAL_TRIPS, na.rm = TRUE))"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#merge-total-passengers-into-busstop.sf",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#merge-total-passengers-into-busstop.sf",
+    "title": "Take-home Exercise 2",
+    "section": "4.2 Merge total passengers into busstop.sf",
+    "text": "4.2 Merge total passengers into busstop.sf\n\nbusstop_trips.sf &lt;- BusStop %&gt;%\n  left_join(origin_trips, by = c(\"BUS_STOP_N\" = \"ORIGIN_PT_CODE\"))\n\nsummary(busstop_trips.sf$total_trips)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's \n      4    3566   11059   24000   26069 1932052     154"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#spatial-aggregation",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#spatial-aggregation",
+    "title": "Take-home Exercise 2",
+    "section": "4.3 Spatial aggregation",
+    "text": "4.3 Spatial aggregation\n\nhex_trips.sf &lt;- st_join(hexagon, busstop_trips.sf) %&gt;%\n  group_by(hex_id = row_number()) %&gt;%\n  summarise(total_trips = sum(total_trips, na.rm = TRUE))"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#visualize-the-distribution",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#visualize-the-distribution",
+    "title": "Take-home Exercise 2",
+    "section": "4.4 Visualize the distribution",
+    "text": "4.4 Visualize the distribution\n\ntmap_mode(\"plot\")\n\ntm_shape(mpsz) +\n  tm_polygons(alpha = 0.1, border.col = \"grey\") + \n  \n  tm_shape(hex_trips.sf) +\n  tm_polygons(\"total_trips\",\n              style = \"quantile\",\n              palette = \"YlOrRd\",\n              border.alpha = 0.3,\n              title = \"Total Passenger Trips by Origin (Hexagon 375m)\") +\n  \n  tm_layout(legend.outside = TRUE)\n\n\n\n\n\n\n\n\nThis choropleth map reveals strong spatial concentration of bus trip origins. Dark red hexagons (30,703–1.9M trips) form clear hotspots in central Singapore (CBD, Orchard) and regional hubs (Tampines, Jurong East), indicating high demand zones. Yellow areas (0–2,065 trips) in peripheral regions (e.g., Western Catchment, Lim Chu Kang) reflect low demand. The extreme value range (max ≈1.9M vs min ≈0) highlights significant inequality in trip generation, emphasizing the need for demand-based resource allocation."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#calculate-global-morans-i",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#calculate-global-morans-i",
+    "title": "Take-home Exercise 2",
+    "section": "5.1 Calculate global Moran’s I",
+    "text": "5.1 Calculate global Moran’s I\n\nhex_nb &lt;- poly2nb(hex_trips.sf, queen = TRUE)\n\nhex_listw &lt;- nb2listw(hex_nb, style = \"W\", zero.policy = TRUE)\n\nglobal_moran &lt;- moran.test(hex_trips.sf$total_trips, listw = hex_listw, zero.policy = TRUE)\nglobal_moran\n\n\n    Moran I test under randomisation\n\ndata:  hex_trips.sf$total_trips  \nweights: hex_listw  \nn reduced by no-neighbour observations  \n\nMoran I statistic standard deviate = 13.855, p-value &lt; 2.2e-16\nalternative hypothesis: greater\nsample estimates:\nMoran I statistic       Expectation          Variance \n     9.882886e-02     -1.942502e-04      5.108348e-05"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#calculate-local-morans-i",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#calculate-local-morans-i",
+    "title": "Take-home Exercise 2",
+    "section": "5.2 Calculate local Moran’s I",
+    "text": "5.2 Calculate local Moran’s I\n\nlocal_moran &lt;- localmoran(hex_trips.sf$total_trips, listw = hex_listw, zero.policy = TRUE)\n\nhex_trips.sf &lt;- hex_trips.sf %&gt;%\n  mutate(\n    local_I = local_moran[, 1],       \n    z_value = local_moran[, 4],       \n    p_value = local_moran[, 5]        \n  )"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#calculate-local-gearys-c",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#calculate-local-gearys-c",
+    "title": "Take-home Exercise 2",
+    "section": "5.3 Calculate Local Geary’s C",
+    "text": "5.3 Calculate Local Geary’s C\n\nlocal_geary &lt;- localC(hex_trips.sf$total_trips, \n                     listw = hex_listw, \n                     zero.policy = TRUE)\n\nhex_trips.sf &lt;- hex_trips.sf %&gt;%\n  mutate(\n    local_geary = local_geary,\n    geary_pvalue = pnorm(-abs(local_geary)) \n  )"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#calculate-getis-ord-gi",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#calculate-getis-ord-gi",
+    "title": "Take-home Exercise 2",
+    "section": "5.4 Calculate Getis-Ord Gi*",
+    "text": "5.4 Calculate Getis-Ord Gi*\n\nlocal_g &lt;- localG(hex_trips.sf$total_trips, \n                 listw = hex_listw, \n                 zero.policy = TRUE)\n\nhex_trips.sf &lt;- hex_trips.sf %&gt;%\n  mutate(\n    gi_star = local_g,\n    gi_pvalue = 2 * pnorm(-abs(local_g))  \n  )"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#plotting",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#plotting",
+    "title": "Take-home Exercise 2",
+    "section": "5.5 Plotting",
+    "text": "5.5 Plotting\n\nhex_trips.sf &lt;- hex_trips.sf %&gt;%\n  mutate(\n    cluster = case_when(\n      local_I &gt; 0 & p_value &lt; 0.05 & total_trips &gt; mean(total_trips) ~ \"High-High\",\n      local_I &gt; 0 & p_value &lt; 0.05 & total_trips &lt;= mean(total_trips) ~ \"Low-Low\",\n      local_I &lt; 0 & p_value &lt; 0.05 & total_trips &gt; mean(total_trips) ~ \"High-Low\",\n      local_I &lt; 0 & p_value &lt; 0.05 & total_trips &lt;= mean(total_trips) ~ \"Low-High\",\n      TRUE ~ \"Insignificant\"\n    )\n  )\n\ntmap_mode(\"plot\")\ntm_shape(mpsz) +\n  tm_polygons(col = \"gray95\", border.col = \"gray80\") +\ntm_shape(hex_trips.sf) +\n  tm_fill(\n    col = \"cluster\",\n    palette = c(\"red\", \"pink\", \"lightblue\", \"blue\", \"white\"),\n    title = \"Local Moran Cluster\"\n  ) +\n  tm_borders(col = \"gray50\", lwd = 0.3) +\n  tm_layout(\n    main.title = \"Local Spatial Autocorrelation of Bus Trip Volume\",\n    legend.outside = TRUE\n  )\n\n\n\n\n\n\n\n\nThis Local Moran’s I map identifies four types of spatial clusters. ​​Red “High-High” clusters​​ dominate central Singapore (CBD, Orchard) and regional centers, showing areas with high trip volumes surrounded by similarly high volumes. ​​Blue “Low-High” outliers​​ (high value surrounded by low values) appear sporadically, possibly indicating isolated high-demand stops in generally low-demand areas. The overwhelming ​​gray “Insignificant” areas​​ confirm that spatial autocorrelation is concentrated in specific hubs rather than widespread.\n\nhex_trips.sf %&gt;%\n  mutate(\n    gi_cluster = case_when(\n      gi_star &gt; 0 & gi_pvalue &lt; 0.05 ~ \"Hotspot\",\n      gi_star &lt; 0 & gi_pvalue &lt; 0.05 ~ \"Coldspot\",\n      TRUE ~ \"Insignificant\"\n    )\n  ) %&gt;%\n  {  \n    tm_shape(mpsz) +  \n      tm_polygons(col = \"gray95\", border.col = \"gray80\") + \n    tm_shape(.) +  \n      tm_polygons(\n        \"gi_cluster\", \n        palette = c(\"red\", \"blue\", \"gray90\"),\n        title = \"Getis-Ord Gi* Clusters\"\n      ) +\n      tm_borders(col = \"gray50\", lwd = 0.3) +  \n      tm_layout(\n        main.title = \"Getis-Ord Gi* Hotspots/Coldspots of Bus Trip Volume\",  \n        legend.outside = TRUE  \n      )\n  }\n\n\n\n\n\n\n\n\nThe Getis-Ord Gi* analysis reveals more focused ​​red hotspots​​ in central and western Singapore, specifically identifying statistically significant clusters of high values. Unlike Moran’s I, Gi* specializes in detecting “hot” and “cold” spots without distinguishing spatial outliers. The near-absence of coldspots (green) suggests few areas have consistently low trip volumes surrounded by similarly low volumes. The concentrated hotspots align with known commercial and transport hubs."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#count-the-number-of-various-types-of-gathering-areas",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#count-the-number-of-various-types-of-gathering-areas",
+    "title": "Take-home Exercise 2",
+    "section": "5.4 Count the number of various types of gathering areas",
+    "text": "5.4 Count the number of various types of gathering areas\n\ncluster_summary &lt;- hex_trips.sf %&gt;%\n  st_drop_geometry() %&gt;%      \n  group_by(cluster) %&gt;%\n  summarise(\n    count = n(),\n    total_trips_sum = sum(total_trips, na.rm = TRUE)\n  ) %&gt;%\n  arrange(desc(count))\n\ncluster_summary\n\n# A tibble: 3 × 3\n  cluster       count total_trips_sum\n  &lt;chr&gt;         &lt;int&gt;           &lt;dbl&gt;\n1 Insignificant  4886       104105574\n2 Low-High        150         1441008\n3 High-High       131        14313914"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#preparing-trip-generation-data",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#preparing-trip-generation-data",
+    "title": "Take-home Exercise 2",
+    "section": "6.1 Preparing Trip Generation Data",
+    "text": "6.1 Preparing Trip Generation Data\n\ntrips &lt;- odbus %&gt;%\n  select(c(ORIGIN_PT_CODE, DAY_TYPE, TIME_PER_HOUR, TOTAL_TRIPS))%&gt;%\n  rename(BUS_STOP_N = ORIGIN_PT_CODE)%&gt;%\n  rename(HOUR_OF_DAY = TIME_PER_HOUR)%&gt;%\n  rename(TRIPS = TOTAL_TRIPS)\ntrips$BUS_STOP_N &lt;- as.factor(trips$BUS_STOP_N)\nkable(head(trips))\n\n\n\n\nBUS_STOP_N\nDAY_TYPE\nHOUR_OF_DAY\nTRIPS\n\n\n\n\n84671\nWEEKENDS/HOLIDAY\n9\n3\n\n\n10099\nWEEKENDS/HOLIDAY\n13\n31\n\n\n64601\nWEEKENDS/HOLIDAY\n21\n3\n\n\n53009\nWEEKENDS/HOLIDAY\n16\n10\n\n\n80051\nWEEKENDS/HOLIDAY\n18\n4\n\n\n70031\nWEEKDAY\n14\n1\n\n\n\n\n\n\nbs_hex &lt;- st_intersection(\n  BusStop, hexagon) %&gt;%\n  st_drop_geometry() %&gt;%\n  select(c(BUS_STOP_N, HEX_ID))\n\nkable(head(bs_hex))\n\n\n\n\n\nBUS_STOP_N\nHEX_ID\n\n\n\n\n4655\n03331\nH0001\n\n\n1106\n03341\nH0002\n\n\n3530\n03349\nH0002\n\n\n3787\n03371\nH0003\n\n\n2288\n03369\nH0004\n\n\n2414\n06069\nH0005\n\n\n\n\n\n\n6.1.1 Adding HEX_ID into bus trips data\n\ntrips &lt;- inner_join(trips, bs_hex)\nkable(head(trips))\n\n\n\n\nBUS_STOP_N\nDAY_TYPE\nHOUR_OF_DAY\nTRIPS\nHEX_ID\n\n\n\n\n84671\nWEEKENDS/HOLIDAY\n9\n3\nH0667\n\n\n10099\nWEEKENDS/HOLIDAY\n13\n31\nH0024\n\n\n64601\nWEEKENDS/HOLIDAY\n21\n3\nH1934\n\n\n53009\nWEEKENDS/HOLIDAY\n16\n10\nH1474\n\n\n80051\nWEEKENDS/HOLIDAY\n18\n4\nH0893\n\n\n70031\nWEEKDAY\n14\n1\nH0751"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#generate-hexagon-time-period-travel-table",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#generate-hexagon-time-period-travel-table",
+    "title": "Take-home Exercise 2",
+    "section": "6.2 Generate Hexagon × time period travel table",
+    "text": "6.2 Generate Hexagon × time period travel table\n\ntrips &lt;- trips %&gt;%\n  mutate(\n    time_period = case_when(\n      DAY_TYPE == \"WEEKDAY\" & HOUR_OF_DAY &gt;= 6 & HOUR_OF_DAY &lt; 9 ~ \"Weekday_Morning\",\n      DAY_TYPE == \"WEEKDAY\" & HOUR_OF_DAY &gt;= 17 & HOUR_OF_DAY &lt; 20 ~ \"Weekday_Afternoon\",\n      DAY_TYPE %in% c(\"SATURDAY\", \"SUNDAY\", \"PUBLIC_HOLIDAY\") & HOUR_OF_DAY &gt;= 11 & HOUR_OF_DAY &lt; 20 ~ \"Weekend_Holiday\",\n      TRUE ~ NA_character_\n    )\n  ) %&gt;%\n  filter(!is.na(time_period))\n\nhex_time_trips &lt;- trips %&gt;%\n  group_by(HEX_ID, time_period) %&gt;%\n  summarise(trips_sum = sum(TRIPS, na.rm = TRUE), .groups = \"drop\")\n\nhex_time_trips &lt;- hex_time_trips %&gt;%\n  mutate(time_index = as.numeric(factor(time_period, levels = c(\"Weekday_Morning\", \"Weekday_Afternoon\", \"Weekend_Holiday\"))))\n\nhead(hex_time_trips)\n\n# A tibble: 6 × 4\n  HEX_ID time_period       trips_sum time_index\n  &lt;fct&gt;  &lt;chr&gt;                 &lt;dbl&gt;      &lt;dbl&gt;\n1 H0001  Weekday_Afternoon        27          2\n2 H0002  Weekday_Afternoon        97          2\n3 H0002  Weekday_Morning           5          1\n4 H0003  Weekday_Afternoon        23          2\n5 H0003  Weekday_Morning           1          1\n6 H0004  Weekday_Afternoon        39          2"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#generate-space-time-cube",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#generate-space-time-cube",
+    "title": "Take-home Exercise 2",
+    "section": "6.3 Generate Space-Time Cube",
+    "text": "6.3 Generate Space-Time Cube\n\nlibrary(Kendall)\n\nhex_trend &lt;- hex_time_trips %&gt;%\n  group_by(HEX_ID) %&gt;%\n  summarise(\n    mk_tau = tryCatch({\n      if(n() &gt;= 3) Kendall(trips_sum)$tau else NA_real_\n    }, error = function(e) NA_real_),\n    mk_p = tryCatch({\n      if(n() &gt;= 3) Kendall(trips_sum)$sl else NA_real_\n    }, error = function(e) NA_real_),\n    .groups = \"drop\"\n  )"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#classify-ehsa-type",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#classify-ehsa-type",
+    "title": "Take-home Exercise 2",
+    "section": "6.4 Classify EHSA Type",
+    "text": "6.4 Classify EHSA Type\n\nhex_trend &lt;- hex_trend %&gt;%\n  mutate(\n    EHSA_type = case_when(\n      mk_tau &gt; 0 & mk_p &lt; 0.05 ~ \"Intensifying_Hotspot\",\n      mk_tau &lt; 0 & mk_p &lt; 0.05 ~ \"Intensifying_Coldspot\",\n      mk_p &gt;= 0.05 ~ \"Sporadic\",\n      TRUE ~ \"Other\"\n    )\n  )\n\nhead(hex_trend)\n\n# A tibble: 6 × 4\n  HEX_ID mk_tau  mk_p EHSA_type\n  &lt;fct&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    \n1 H0001      NA    NA Other    \n2 H0002      NA    NA Other    \n3 H0003      NA    NA Other    \n4 H0004      NA    NA Other    \n5 H0005      NA    NA Other    \n6 H0006      NA    NA Other"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#join-ehsa-type-back-to-hexagon-sf-for-mapping",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#join-ehsa-type-back-to-hexagon-sf-for-mapping",
+    "title": "Take-home Exercise 2",
+    "section": "6.5 Join EHSA Type back to Hexagon sf for mapping",
+    "text": "6.5 Join EHSA Type back to Hexagon sf for mapping\n\nhex_EHSA_sf &lt;- hexagon %&gt;%\n  left_join(hex_trend, by = c(\"HEX_ID\"))"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#visualize-ehsa-map",
+    "href": "Take-home_Ex/Take-home_ex2/Take-home_ex2.html#visualize-ehsa-map",
+    "title": "Take-home Exercise 2",
+    "section": "6.6 Visualize EHSA map",
+    "text": "6.6 Visualize EHSA map\n\ntmap_mode(\"plot\")\ntm_shape(mpsz) +\n  tm_polygons(col = \"gray95\", border.col = \"gray80\") +\ntm_shape(hex_EHSA_sf) +\n  tm_polygons(col = \"EHSA_type\",\n              palette = c(\"Intensifying_Hotspot\" = \"red\",\n                          \"Intensifying_Coldspot\" = \"blue\",\n                          \"Sporadic\" = \"yellow\",\n                          \"Other\" = \"gray\"),\n              border.col = \"darkorange\",\n              lwd = 0.6,\n              title = \"EHSA Type\") +\ntm_layout(legend.outside = TRUE)\n\n\n\n\n\n\n\n\nThe EHSA results indicate limited significant spatio-temporal trends. The overwhelming “Other” category (orange) suggests most hexagons show no statistically meaningful hot/cold spot patterns over time. The minimal “Missing” data (light orange) implies near-complete spatial coverage but confirms the absence of intensifying, diminishing, or sporadic hotspots. This likely reflects stable travel patterns during the observed periods, with insufficient volatility to generate significant EHSA classifications."
   }
 ]

@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="XieHaoyang">
+
+<title>Take-home Exercise 2 – ISSS626-GAA</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-fad5ab29a14bbe0a7a7d29177f3f13bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ISSS626-GAA</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-hands-on-exercise" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Hands-on Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_ex01/Hands-on_ex1-1.html">
+ <span class="dropdown-text">Hands-on Exercise 1-1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_ex01/Hands-on_ex1-2.html">
+ <span class="dropdown-text">Hands-on Exercise 1-2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_ex02/Hands-on_ex2-1.html">
+ <span class="dropdown-text">Hands-on Exercise 2-1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_ex02/Hands-on_ex2-2.html">
+ <span class="dropdown-text">Hands-on Exercise 2-2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_ex03/Hands-on_ex3.html">
+ <span class="dropdown-text">Hands-on Exercise 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_ex04/Hands-on_ex4.html">
+ <span class="dropdown-text">Hands-on Exercise 4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_ex05/Hands-on_ex5-1.html">
+ <span class="dropdown-text">Hands-on Exercise 5-1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_ex05/Hands-on_ex5-2.html">
+ <span class="dropdown-text">Hands-on Exercise 5-2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_ex06/Hands-on_ex6.html">
+ <span class="dropdown-text">Hands-on Exercise 6</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_ex07/Hands-on_ex7.html">
+ <span class="dropdown-text">Hands-on Exercise 7</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-in-class-exercise" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">In-class Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_ex1/In-class_ex03a.html">
+ <span class="dropdown-text">In-class Exercise 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_ex2/In-class_ex2.html">
+ <span class="dropdown-text">In-class Exercise 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_ex3/In-class_ex3.html">
+ <span class="dropdown-text">In-class Exercise 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_ex4/In-class_ex4.html">
+ <span class="dropdown-text">In-class Exercise 4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_ex5/In-class_ex5.html">
+ <span class="dropdown-text">In-class Exercise 5</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_ex6/In-class_ex6.html">
+ <span class="dropdown-text">In-class Exercise 6</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-take-home-exercise" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Take-home Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../Take-home_Ex/Take-home_ex1/Take-home_ex1.html">
+ <span class="dropdown-text">Take-home Exercise 1</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">1. Overview</a>
+  <ul class="collapse">
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">1.1 Background</a></li>
+  <li><a href="#objectives" id="toc-objectives" class="nav-link" data-scroll-target="#objectives">1.2 Objectives</a></li>
+  </ul></li>
+  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link" data-scroll-target="#data-wrangling">2. Data Wrangling</a>
+  <ul class="collapse">
+  <li><a href="#loading-packages" id="toc-loading-packages" class="nav-link" data-scroll-target="#loading-packages">2.1 Loading Packages</a></li>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">2.2 The Data</a>
+  <ul class="collapse">
+  <li><a href="#importing-geospatial-data" id="toc-importing-geospatial-data" class="nav-link" data-scroll-target="#importing-geospatial-data">2.2.1 Importing geospatial data</a></li>
+  <li><a href="#importing-bus-stop-data" id="toc-importing-bus-stop-data" class="nav-link" data-scroll-target="#importing-bus-stop-data">2.2.2 Importing Bus Stop data</a></li>
+  </ul></li>
+  <li><a href="#extractting-bus-stops-within-singapore" id="toc-extractting-bus-stops-within-singapore" class="nav-link" data-scroll-target="#extractting-bus-stops-within-singapore">2.3 Extractting Bus Stops within Singapore</a></li>
+  </ul></li>
+  <li><a href="#deriving-analytical-hexagon" id="toc-deriving-analytical-hexagon" class="nav-link" data-scroll-target="#deriving-analytical-hexagon">3 Deriving Analytical Hexagon</a>
+  <ul class="collapse">
+  <li><a href="#generate-a-375m-hexagonal-grid" id="toc-generate-a-375m-hexagonal-grid" class="nav-link" data-scroll-target="#generate-a-375m-hexagonal-grid">3.1 Generate a 375m hexagonal grid</a></li>
+  <li><a href="#filtering-hexagons-with-bus-stops" id="toc-filtering-hexagons-with-bus-stops" class="nav-link" data-scroll-target="#filtering-hexagons-with-bus-stops">3.2 Filtering hexagons with bus stops</a></li>
+  <li><a href="#assigning-ids-to-each-hexagon" id="toc-assigning-ids-to-each-hexagon" class="nav-link" data-scroll-target="#assigning-ids-to-each-hexagon">3.3 Assigning ids to each hexagon</a></li>
+  <li><a href="#view-hexagon-and-busstop-distribution" id="toc-view-hexagon-and-busstop-distribution" class="nav-link" data-scroll-target="#view-hexagon-and-busstop-distribution">3.4 View hexagon and BusStop distribution</a></li>
+  </ul></li>
+  <li><a href="#calculate-the-number-of-trips-at-the-hexagon" id="toc-calculate-the-number-of-trips-at-the-hexagon" class="nav-link" data-scroll-target="#calculate-the-number-of-trips-at-the-hexagon">4.Calculate the number of trips at the hexagon</a>
+  <ul class="collapse">
+  <li><a href="#calculate-the-total-number-of-passengers-for-each-origin_pt_code-departure-station" id="toc-calculate-the-total-number-of-passengers-for-each-origin_pt_code-departure-station" class="nav-link" data-scroll-target="#calculate-the-total-number-of-passengers-for-each-origin_pt_code-departure-station">4.1 Calculate the total number of passengers for each ORIGIN_PT_CODE (departure station)</a></li>
+  <li><a href="#merge-total-passengers-into-busstop.sf" id="toc-merge-total-passengers-into-busstop.sf" class="nav-link" data-scroll-target="#merge-total-passengers-into-busstop.sf">4.2 Merge total passengers into busstop.sf</a></li>
+  <li><a href="#spatial-aggregation" id="toc-spatial-aggregation" class="nav-link" data-scroll-target="#spatial-aggregation">4.3 Spatial aggregation</a></li>
+  <li><a href="#visualize-the-distribution" id="toc-visualize-the-distribution" class="nav-link" data-scroll-target="#visualize-the-distribution">4.4 Visualize the distribution</a></li>
+  </ul></li>
+  <li><a href="#exploratory-spatial-data-analysis-esda" id="toc-exploratory-spatial-data-analysis-esda" class="nav-link" data-scroll-target="#exploratory-spatial-data-analysis-esda">5.Exploratory Spatial Data Analysis (ESDA)</a>
+  <ul class="collapse">
+  <li><a href="#calculate-global-morans-i" id="toc-calculate-global-morans-i" class="nav-link" data-scroll-target="#calculate-global-morans-i">5.1 Calculate global Moran’s I</a></li>
+  <li><a href="#calculate-local-morans-i" id="toc-calculate-local-morans-i" class="nav-link" data-scroll-target="#calculate-local-morans-i">5.2 Calculate local Moran’s I</a></li>
+  <li><a href="#calculate-local-gearys-c" id="toc-calculate-local-gearys-c" class="nav-link" data-scroll-target="#calculate-local-gearys-c">5.3 Calculate Local Geary’s C</a></li>
+  <li><a href="#calculate-getis-ord-gi" id="toc-calculate-getis-ord-gi" class="nav-link" data-scroll-target="#calculate-getis-ord-gi">5.4 Calculate Getis-Ord Gi*</a></li>
+  <li><a href="#plotting" id="toc-plotting" class="nav-link" data-scroll-target="#plotting">5.5 Plotting</a></li>
+  <li><a href="#count-the-number-of-various-types-of-gathering-areas" id="toc-count-the-number-of-various-types-of-gathering-areas" class="nav-link" data-scroll-target="#count-the-number-of-various-types-of-gathering-areas">5.4 Count the number of various types of gathering areas</a></li>
+  </ul></li>
+  <li><a href="#emerging-hot-spot-analysis-ehsa" id="toc-emerging-hot-spot-analysis-ehsa" class="nav-link" data-scroll-target="#emerging-hot-spot-analysis-ehsa">6.Emerging Hot Spot Analysis (EHSA)</a>
+  <ul class="collapse">
+  <li><a href="#preparing-trip-generation-data" id="toc-preparing-trip-generation-data" class="nav-link" data-scroll-target="#preparing-trip-generation-data">6.1 Preparing Trip Generation Data</a>
+  <ul class="collapse">
+  <li><a href="#adding-hex_id-into-bus-trips-data" id="toc-adding-hex_id-into-bus-trips-data" class="nav-link" data-scroll-target="#adding-hex_id-into-bus-trips-data">6.1.1 Adding HEX_ID into bus trips data</a></li>
+  </ul></li>
+  <li><a href="#generate-hexagon-time-period-travel-table" id="toc-generate-hexagon-time-period-travel-table" class="nav-link" data-scroll-target="#generate-hexagon-time-period-travel-table">6.2 Generate Hexagon × time period travel table</a></li>
+  <li><a href="#generate-space-time-cube" id="toc-generate-space-time-cube" class="nav-link" data-scroll-target="#generate-space-time-cube">6.3 Generate Space-Time Cube</a></li>
+  <li><a href="#classify-ehsa-type" id="toc-classify-ehsa-type" class="nav-link" data-scroll-target="#classify-ehsa-type">6.4 Classify EHSA Type</a></li>
+  <li><a href="#join-ehsa-type-back-to-hexagon-sf-for-mapping" id="toc-join-ehsa-type-back-to-hexagon-sf-for-mapping" class="nav-link" data-scroll-target="#join-ehsa-type-back-to-hexagon-sf-for-mapping">6.5 Join EHSA Type back to Hexagon sf for mapping</a></li>
+  <li><a href="#visualize-ehsa-map" id="toc-visualize-ehsa-map" class="nav-link" data-scroll-target="#visualize-ehsa-map">6.6 Visualize EHSA map</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">7.Conclusion</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Take-home Exercise 2</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>XieHaoyang </p>
+          </div>
+  </div>
+    
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">October 21, 2025</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><img src="images/d612ba72ee84475e83c9431982881547.png" class="img-fluid"></p>
+<section id="overview" class="level1">
+<h1>1. Overview</h1>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">1.1 Background</h2>
+<p>Singapore’s dense urban environment and heavy reliance on public transport make efficient bus systems critical. While smart card and GPS data from LTA provide detailed trip records, traditional analysis often overlooks hidden spatial-temporal patterns. Advanced geostatistical methods like Local Spatial Autocorrelation (LMSA) and Emerging Hot Spot Analysis (EHSA) can uncover these patterns, helping optimize routes and resource allocation.</p>
+<p>This study uses August 2025 bus trip data to analyze passenger volumes across a 375m hexagonal grid, identifying:</p>
+<ul>
+<li><p>Spatial clusters (hotspots/coldspots) of demand</p></li>
+<li><p>Temporal trends (e.g., peak-hour intensification)</p></li>
+<li><p>Anomalies for targeted improvements</p></li>
+</ul>
+</section>
+<section id="objectives" class="level2">
+<h2 class="anchored" data-anchor-id="objectives">1.2 Objectives</h2>
+<ol type="1">
+<li><p>​​Detect spatial patterns​​ in bus trip generation using:</p>
+<ul>
+<li><p><em>Local Moran’s I</em>, <em>Geary’s C</em>, and <em>Getis-Ord Gi​</em>*​</p></li>
+<li><p>Hexagon-level (375m) hotspots/coldspots</p></li>
+</ul></li>
+<li><p>​​Analyze temporal trends​​ via EHSA:</p>
+<ul>
+<li><p>Classify demand changes (<em>Intensifying</em>, <em>Sporadic</em>, <em>Diminishing</em>)</p></li>
+<li><p>Focus on peak hours (weekday 6–9am, 5–8pm; weekend 11am–8pm)</p></li>
+</ul></li>
+<li><p>​​Provide actionable insights​​ for:</p>
+<ul>
+<li><p>Bus lane prioritization</p></li>
+<li><p>Resource allocation to underserved areas</p></li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="data-wrangling" class="level1">
+<h1>2. Data Wrangling</h1>
+<section id="loading-packages" class="level2">
+<h2 class="anchored" data-anchor-id="loading-packages">2.1 Loading Packages</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 77%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Packages</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sf</td>
+<td>Core package for reading, processing, manipulating, and analyzing vector spatial data in R.</td>
+</tr>
+<tr class="even">
+<td>tidyvers</td>
+<td>A collection of data science tools for cleaning, visualizing, and importing data following the “tidy data” principle.</td>
+</tr>
+<tr class="odd">
+<td>tmap</td>
+<td>Facilitates static and interactive spatial data visualization with a concise, customizable syntax.</td>
+</tr>
+<tr class="even">
+<td>sfdep</td>
+<td>Spatial dependence analysis tool built on sf, offering local spatial autocorrelation tests and spatial weight matrix construction.</td>
+</tr>
+<tr class="odd">
+<td>knitr</td>
+<td>Enables dynamic document generation by integrating R code, text, and plots into PDF, HTML, and Word formats.</td>
+</tr>
+<tr class="even">
+<td>lubridate</td>
+<td>Simplifies date/time data handling, including parsing, conversion, arithmetic operations, and time zone adjustments.</td>
+</tr>
+<tr class="odd">
+<td>units</td>
+<td>Adds physical units to numerical data and supports unit-aware arithmetic operations and conversions.</td>
+</tr>
+<tr class="even">
+<td>spdep</td>
+<td>Classic spatial dependence analysis package for constructing spatial weight matrices and conducting global/local spatial autocorrelation tests (compatible with traditional spatial data formats).</td>
+</tr>
+<tr class="odd">
+<td>tmaptools</td>
+<td>Auxiliary toolset for tmap, providing spatial data preprocessing, base map loading, and legend optimization.</td>
+</tr>
+<tr class="even">
+<td>spcetime</td>
+<td>Supports storage, processing, and analysis of spatiotemporal data, enabling creation and querying of spatiotemporal objects.</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sf, tidyverse, tmap, sfdep, knitr,lubridate, units, spdep, tmaptools, spacetime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="the-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-data">2.2 The Data</h2>
+<p>The data comes from DataMall | Land Transport Authority (LTA) . Before importing, the data has been processed.</p>
+<section id="importing-geospatial-data" class="level3">
+<h3 class="anchored" data-anchor-id="importing-geospatial-data">2.2.1 Importing geospatial data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mpsz <span class="ot">=</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"data/geospatial"</span>, </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">layer =</span> <span class="st">"MP14_SUBZONE_WEB_PL"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `MP14_SUBZONE_WEB_PL' from data source 
+  `D:\XieHaoyang3537\ISSS626-GAA-XieHaoyang\Take-home_Ex\Take-home_ex2\data\geospatial' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 323 features and 15 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 2667.538 ymin: 15748.72 xmax: 56396.44 ymax: 50256.33
+Projected CRS: SVY21</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mpsz <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(mpsz, <span class="dv">3414</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="importing-bus-stop-data" class="level3">
+<h3 class="anchored" data-anchor-id="importing-bus-stop-data">2.2.2 Importing Bus Stop data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>BusStop <span class="ot">=</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"D:/XieHaoyang3537/ISSS626-GAA-XieHaoyang/In-class_Ex/In-class_ex5/data/LTADataMall/"</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">layer =</span> <span class="st">"BusStop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `BusStop' from data source 
+  `D:\XieHaoyang3537\ISSS626-GAA-XieHaoyang\In-class_Ex\In-class_ex5\data\LTAdataMall' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 5172 features and 2 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 3970.122 ymin: 26482.1 xmax: 48285.52 ymax: 52983.82
+Projected CRS: SVY21</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>BusStop <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(BusStop, <span class="dv">3414</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>odbus <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"D:/XieHaoyang3537/ISSS626-GAA-XieHaoyang/In-class_Ex/In-class_ex5/data/LTADataMall/origin_destination_bus_202508.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="extractting-bus-stops-within-singapore" class="level2">
+<h2 class="anchored" data-anchor-id="extractting-bus-stops-within-singapore">2.3 Extractting Bus Stops within Singapore</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>BusStop_in_SG <span class="ot">&lt;-</span> <span class="fu">st_join</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  BusStop, mpsz,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">join =</span> st_within,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">left =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(mpsz) <span class="sc">+</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(BusStop_in_SG) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="deriving-analytical-hexagon" class="level1">
+<h1>3 Deriving Analytical Hexagon</h1>
+<section id="generate-a-375m-hexagonal-grid" class="level2">
+<h2 class="anchored" data-anchor-id="generate-a-375m-hexagonal-grid">3.1 Generate a 375m hexagonal grid</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>hexagon <span class="ot">&lt;-</span> <span class="fu">st_make_grid</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  mpsz,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">cellsize =</span> <span class="dv">375</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">what =</span> <span class="st">"polygons"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">square =</span> <span class="cn">FALSE</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_sf</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_intersection</span>(mpsz)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="filtering-hexagons-with-bus-stops" class="level2">
+<h2 class="anchored" data-anchor-id="filtering-hexagons-with-bus-stops">3.2 Filtering hexagons with bus stops</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>hexagon<span class="sc">$</span>n_collisions <span class="ot">=</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lengths</span>(<span class="fu">st_intersects</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    hexagon, BusStop_in_SG))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>hexagon <span class="ot">&lt;-</span> <span class="fu">filter</span>(hexagon, n_collisions <span class="sc">&gt;</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="assigning-ids-to-each-hexagon" class="level2">
+<h2 class="anchored" data-anchor-id="assigning-ids-to-each-hexagon">3.3 Assigning ids to each hexagon</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>hexagon <span class="ot">&lt;-</span> hexagon <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(, <span class="sc">-</span> n_collisions)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>hexagon<span class="sc">$</span>HEX_ID <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"H%04d"</span>, <span class="fu">seq_len</span>(<span class="fu">nrow</span>(hexagon))) <span class="sc">%&gt;%</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.factor</span>()</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(hexagon))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 7%">
+<col style="width: 4%">
+<col style="width: 8%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 15%">
+<col style="width: 3%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">OBJECTID</th>
+<th style="text-align: right;">SUBZONE_NO</th>
+<th style="text-align: left;">SUBZONE_N</th>
+<th style="text-align: left;">SUBZONE_C</th>
+<th style="text-align: left;">CA_IND</th>
+<th style="text-align: left;">PLN_AREA_N</th>
+<th style="text-align: left;">PLN_AREA_C</th>
+<th style="text-align: left;">REGION_N</th>
+<th style="text-align: left;">REGION_C</th>
+<th style="text-align: left;">INC_CRC</th>
+<th style="text-align: left;">FMEL_UPD_D</th>
+<th style="text-align: right;">X_ADDR</th>
+<th style="text-align: right;">Y_ADDR</th>
+<th style="text-align: right;">SHAPE_Leng</th>
+<th style="text-align: right;">SHAPE_Area</th>
+<th style="text-align: left;">geometry</th>
+<th style="text-align: left;">HEX_ID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">MARINA SOUTH</td>
+<td style="text-align: left;">MSSZ01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">MARINA SOUTH</td>
+<td style="text-align: left;">MS</td>
+<td style="text-align: left;">CENTRAL REGION</td>
+<td style="text-align: left;">CR</td>
+<td style="text-align: left;">5ED7EB253F99252E</td>
+<td style="text-align: left;">2014-12-05</td>
+<td style="text-align: right;">31595.84</td>
+<td style="text-align: right;">29220.19</td>
+<td style="text-align: right;">5267.381</td>
+<td style="text-align: right;">1630379.3</td>
+<td style="text-align: left;">POLYGON ((30980.04 28847.36…</td>
+<td style="text-align: left;">H0001</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">MARINA SOUTH</td>
+<td style="text-align: left;">MSSZ01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">MARINA SOUTH</td>
+<td style="text-align: left;">MS</td>
+<td style="text-align: left;">CENTRAL REGION</td>
+<td style="text-align: left;">CR</td>
+<td style="text-align: left;">5ED7EB253F99252E</td>
+<td style="text-align: left;">2014-12-05</td>
+<td style="text-align: right;">31595.84</td>
+<td style="text-align: right;">29220.19</td>
+<td style="text-align: right;">5267.381</td>
+<td style="text-align: right;">1630379.3</td>
+<td style="text-align: left;">POLYGON ((31355.04 28630.85…</td>
+<td style="text-align: left;">H0002</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">MARINA SOUTH</td>
+<td style="text-align: left;">MSSZ01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">MARINA SOUTH</td>
+<td style="text-align: left;">MS</td>
+<td style="text-align: left;">CENTRAL REGION</td>
+<td style="text-align: left;">CR</td>
+<td style="text-align: left;">5ED7EB253F99252E</td>
+<td style="text-align: left;">2014-12-05</td>
+<td style="text-align: right;">31595.84</td>
+<td style="text-align: right;">29220.19</td>
+<td style="text-align: right;">5267.381</td>
+<td style="text-align: right;">1630379.3</td>
+<td style="text-align: left;">POLYGON ((31542.54 28955.61…</td>
+<td style="text-align: left;">H0003</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">MARINA SOUTH</td>
+<td style="text-align: left;">MSSZ01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">MARINA SOUTH</td>
+<td style="text-align: left;">MS</td>
+<td style="text-align: left;">CENTRAL REGION</td>
+<td style="text-align: left;">CR</td>
+<td style="text-align: left;">5ED7EB253F99252E</td>
+<td style="text-align: left;">2014-12-05</td>
+<td style="text-align: right;">31595.84</td>
+<td style="text-align: right;">29220.19</td>
+<td style="text-align: right;">5267.381</td>
+<td style="text-align: right;">1630379.3</td>
+<td style="text-align: left;">POLYGON ((31917.54 28955.61…</td>
+<td style="text-align: left;">H0004</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">PEARL’S HILL</td>
+<td style="text-align: left;">OTSZ01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">OUTRAM</td>
+<td style="text-align: left;">OT</td>
+<td style="text-align: left;">CENTRAL REGION</td>
+<td style="text-align: left;">CR</td>
+<td style="text-align: left;">8C7149B9EB32EEFC</td>
+<td style="text-align: left;">2014-12-05</td>
+<td style="text-align: right;">28679.06</td>
+<td style="text-align: right;">29782.05</td>
+<td style="text-align: right;">3506.107</td>
+<td style="text-align: right;">559816.2</td>
+<td style="text-align: left;">MULTIPOLYGON (((28161 29825…</td>
+<td style="text-align: left;">H0005</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">PEARL’S HILL</td>
+<td style="text-align: left;">OTSZ01</td>
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">OUTRAM</td>
+<td style="text-align: left;">OT</td>
+<td style="text-align: left;">CENTRAL REGION</td>
+<td style="text-align: left;">CR</td>
+<td style="text-align: left;">8C7149B9EB32EEFC</td>
+<td style="text-align: left;">2014-12-05</td>
+<td style="text-align: right;">28679.06</td>
+<td style="text-align: right;">29782.05</td>
+<td style="text-align: right;">3506.107</td>
+<td style="text-align: right;">559816.2</td>
+<td style="text-align: left;">POLYGON ((28283.74 29538.04…</td>
+<td style="text-align: left;">H0006</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="view-hexagon-and-busstop-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="view-hexagon-and-busstop-distribution">3.4 View hexagon and BusStop distribution</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View hexagon and BusStop distribution</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(mpsz) <span class="sc">+</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"gray95"</span>, <span class="at">border.col =</span> <span class="st">"gray80"</span>) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(hexagon) <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">"darkorange"</span>, <span class="at">lwd =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(BusStop) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">size =</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex2_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This map shows the final analytical hexagon grid (black dots) derived from the initial hexagonal framework (orange lines). The dense distribution of points across Singapore’s outline confirms successful spatial indexing, where each dot represents a hexagon cell containing at least one bus stop (as filtered in Step 3.2). The clustering of dots in central areas (e.g., CBD) reflects higher bus stop density, while sparser dots in peripheral regions (e.g., Lim Chu Kang) indicate lower coverage. The hexagon grid now serves as the spatial unit for subsequent trip volume aggregation and analysis.</p>
+</section>
+</section>
+<section id="calculate-the-number-of-trips-at-the-hexagon" class="level1">
+<h1>4.Calculate the number of trips at the hexagon</h1>
+<section id="calculate-the-total-number-of-passengers-for-each-origin_pt_code-departure-station" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-the-total-number-of-passengers-for-each-origin_pt_code-departure-station">4.1 Calculate the total number of passengers for each ORIGIN_PT_CODE (departure station)</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>origin_trips <span class="ot">&lt;-</span> odbus <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ORIGIN_PT_CODE) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_trips =</span> <span class="fu">sum</span>(TOTAL_TRIPS, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="merge-total-passengers-into-busstop.sf" class="level2">
+<h2 class="anchored" data-anchor-id="merge-total-passengers-into-busstop.sf">4.2 Merge total passengers into busstop.sf</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>busstop_trips.sf <span class="ot">&lt;-</span> BusStop <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(origin_trips, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"BUS_STOP_N"</span> <span class="ot">=</span> <span class="st">"ORIGIN_PT_CODE"</span>))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(busstop_trips.sf<span class="sc">$</span>total_trips)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+      4    3566   11059   24000   26069 1932052     154 </code></pre>
+</div>
+</div>
+</section>
+<section id="spatial-aggregation" class="level2">
+<h2 class="anchored" data-anchor-id="spatial-aggregation">4.3 Spatial aggregation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>hex_trips.sf <span class="ot">&lt;-</span> <span class="fu">st_join</span>(hexagon, busstop_trips.sf) <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="at">hex_id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_trips =</span> <span class="fu">sum</span>(total_trips, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="visualize-the-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="visualize-the-distribution">4.4 Visualize the distribution</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(mpsz) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">border.col =</span> <span class="st">"grey"</span>) <span class="sc">+</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(hex_trips.sf) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">"total_trips"</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">style =</span> <span class="st">"quantile"</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">palette =</span> <span class="st">"YlOrRd"</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">border.alpha =</span> <span class="fl">0.3</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">title =</span> <span class="st">"Total Passenger Trips by Origin (Hexagon 375m)"</span>) <span class="sc">+</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex2_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This choropleth map reveals strong spatial concentration of bus trip origins. Dark red hexagons (30,703–1.9M trips) form clear hotspots in central Singapore (CBD, Orchard) and regional hubs (Tampines, Jurong East), indicating high demand zones. Yellow areas (0–2,065 trips) in peripheral regions (e.g., Western Catchment, Lim Chu Kang) reflect low demand. The extreme value range (max ≈1.9M vs min ≈0) highlights significant inequality in trip generation, emphasizing the need for demand-based resource allocation.</p>
+</section>
+</section>
+<section id="exploratory-spatial-data-analysis-esda" class="level1">
+<h1>5.Exploratory Spatial Data Analysis (ESDA)</h1>
+<section id="calculate-global-morans-i" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-global-morans-i">5.1 Calculate global Moran’s I</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>hex_nb <span class="ot">&lt;-</span> <span class="fu">poly2nb</span>(hex_trips.sf, <span class="at">queen =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>hex_listw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(hex_nb, <span class="at">style =</span> <span class="st">"W"</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>global_moran <span class="ot">&lt;-</span> <span class="fu">moran.test</span>(hex_trips.sf<span class="sc">$</span>total_trips, <span class="at">listw =</span> hex_listw, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>global_moran</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Moran I test under randomisation
+
+data:  hex_trips.sf$total_trips  
+weights: hex_listw  
+n reduced by no-neighbour observations  
+
+Moran I statistic standard deviate = 13.855, p-value &lt; 2.2e-16
+alternative hypothesis: greater
+sample estimates:
+Moran I statistic       Expectation          Variance 
+     9.882886e-02     -1.942502e-04      5.108348e-05 </code></pre>
+</div>
+</div>
+</section>
+<section id="calculate-local-morans-i" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-local-morans-i">5.2 Calculate local Moran’s I</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>local_moran <span class="ot">&lt;-</span> <span class="fu">localmoran</span>(hex_trips.sf<span class="sc">$</span>total_trips, <span class="at">listw =</span> hex_listw, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>hex_trips.sf <span class="ot">&lt;-</span> hex_trips.sf <span class="sc">%&gt;%</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">local_I =</span> local_moran[, <span class="dv">1</span>],       </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">z_value =</span> local_moran[, <span class="dv">4</span>],       </span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_value =</span> local_moran[, <span class="dv">5</span>]        </span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="calculate-local-gearys-c" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-local-gearys-c">5.3 Calculate Local Geary’s C</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>local_geary <span class="ot">&lt;-</span> <span class="fu">localC</span>(hex_trips.sf<span class="sc">$</span>total_trips, </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">listw =</span> hex_listw, </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>hex_trips.sf <span class="ot">&lt;-</span> hex_trips.sf <span class="sc">%&gt;%</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">local_geary =</span> local_geary,</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">geary_pvalue =</span> <span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(local_geary)) </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="calculate-getis-ord-gi" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-getis-ord-gi">5.4 Calculate Getis-Ord Gi*</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>local_g <span class="ot">&lt;-</span> <span class="fu">localG</span>(hex_trips.sf<span class="sc">$</span>total_trips, </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">listw =</span> hex_listw, </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>hex_trips.sf <span class="ot">&lt;-</span> hex_trips.sf <span class="sc">%&gt;%</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">gi_star =</span> local_g,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">gi_pvalue =</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(local_g))  </span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="plotting" class="level2">
+<h2 class="anchored" data-anchor-id="plotting">5.5 Plotting</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>hex_trips.sf <span class="ot">&lt;-</span> hex_trips.sf <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cluster =</span> <span class="fu">case_when</span>(</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>      local_I <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> p_value <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> total_trips <span class="sc">&gt;</span> <span class="fu">mean</span>(total_trips) <span class="sc">~</span> <span class="st">"High-High"</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>      local_I <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> p_value <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> total_trips <span class="sc">&lt;=</span> <span class="fu">mean</span>(total_trips) <span class="sc">~</span> <span class="st">"Low-Low"</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>      local_I <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> p_value <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> total_trips <span class="sc">&gt;</span> <span class="fu">mean</span>(total_trips) <span class="sc">~</span> <span class="st">"High-Low"</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>      local_I <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> p_value <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> total_trips <span class="sc">&lt;=</span> <span class="fu">mean</span>(total_trips) <span class="sc">~</span> <span class="st">"Low-High"</span>,</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Insignificant"</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(mpsz) <span class="sc">+</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"gray95"</span>, <span class="at">border.col =</span> <span class="st">"gray80"</span>) <span class="sc">+</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(hex_trips.sf) <span class="sc">+</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">"cluster"</span>,</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"pink"</span>, <span class="st">"lightblue"</span>, <span class="st">"blue"</span>, <span class="st">"white"</span>),</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Local Moran Cluster"</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">"gray50"</span>, <span class="at">lwd =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">main.title =</span> <span class="st">"Local Spatial Autocorrelation of Bus Trip Volume"</span>,</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.outside =</span> <span class="cn">TRUE</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex2_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This Local Moran’s I map identifies four types of spatial clusters. ​<strong>​Red “High-High” clusters​</strong>​ dominate central Singapore (CBD, Orchard) and regional centers, showing areas with high trip volumes surrounded by similarly high volumes. ​<strong>​Blue “Low-High” outliers​</strong>​ (high value surrounded by low values) appear sporadically, possibly indicating isolated high-demand stops in generally low-demand areas. The overwhelming ​<strong>​gray “Insignificant” areas​</strong>​ confirm that spatial autocorrelation is concentrated in specific hubs rather than widespread.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>hex_trips.sf <span class="sc">%&gt;%</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">gi_cluster =</span> <span class="fu">case_when</span>(</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>      gi_star <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> gi_pvalue <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">~</span> <span class="st">"Hotspot"</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>      gi_star <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> gi_pvalue <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">~</span> <span class="st">"Coldspot"</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Insignificant"</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  {  </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(mpsz) <span class="sc">+</span>  </span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"gray95"</span>, <span class="at">border.col =</span> <span class="st">"gray80"</span>) <span class="sc">+</span> </span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_shape</span>(.) <span class="sc">+</span>  </span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tm_polygons</span>(</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"gi_cluster"</span>, </span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"gray90"</span>),</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Getis-Ord Gi* Clusters"</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">"gray50"</span>, <span class="at">lwd =</span> <span class="fl">0.3</span>) <span class="sc">+</span>  </span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tm_layout</span>(</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">main.title =</span> <span class="st">"Getis-Ord Gi* Hotspots/Coldspots of Bus Trip Volume"</span>,  </span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.outside =</span> <span class="cn">TRUE</span>  </span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex2_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The Getis-Ord Gi* analysis reveals more focused ​<strong>​red hotspots​</strong>​ in central and western Singapore, specifically identifying statistically significant clusters of high values. Unlike Moran’s I, Gi* specializes in detecting “hot” and “cold” spots without distinguishing spatial outliers. The near-absence of coldspots (green) suggests few areas have consistently low trip volumes surrounded by similarly low volumes. The concentrated hotspots align with known commercial and transport hubs.</p>
+</section>
+<section id="count-the-number-of-various-types-of-gathering-areas" class="level2">
+<h2 class="anchored" data-anchor-id="count-the-number-of-various-types-of-gathering-areas">5.4 Count the number of various types of gathering areas</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>cluster_summary <span class="ot">&lt;-</span> hex_trips.sf <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span>      </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">count =</span> <span class="fu">n</span>(),</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_trips_sum =</span> <span class="fu">sum</span>(total_trips, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(count))</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>cluster_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  cluster       count total_trips_sum
+  &lt;chr&gt;         &lt;int&gt;           &lt;dbl&gt;
+1 Insignificant  4886       104105574
+2 Low-High        150         1441008
+3 High-High       131        14313914</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="emerging-hot-spot-analysis-ehsa" class="level1">
+<h1>6.Emerging Hot Spot Analysis (EHSA)</h1>
+<section id="preparing-trip-generation-data" class="level2">
+<h2 class="anchored" data-anchor-id="preparing-trip-generation-data">6.1 Preparing Trip Generation Data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>trips <span class="ot">&lt;-</span> odbus <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">c</span>(ORIGIN_PT_CODE, DAY_TYPE, TIME_PER_HOUR, TOTAL_TRIPS))<span class="sc">%&gt;%</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">BUS_STOP_N =</span> ORIGIN_PT_CODE)<span class="sc">%&gt;%</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">HOUR_OF_DAY =</span> TIME_PER_HOUR)<span class="sc">%&gt;%</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">TRIPS =</span> TOTAL_TRIPS)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>trips<span class="sc">$</span>BUS_STOP_N <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(trips<span class="sc">$</span>BUS_STOP_N)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(trips))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">BUS_STOP_N</th>
+<th style="text-align: left;">DAY_TYPE</th>
+<th style="text-align: right;">HOUR_OF_DAY</th>
+<th style="text-align: right;">TRIPS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">84671</td>
+<td style="text-align: left;">WEEKENDS/HOLIDAY</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10099</td>
+<td style="text-align: left;">WEEKENDS/HOLIDAY</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">64601</td>
+<td style="text-align: left;">WEEKENDS/HOLIDAY</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">53009</td>
+<td style="text-align: left;">WEEKENDS/HOLIDAY</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">80051</td>
+<td style="text-align: left;">WEEKENDS/HOLIDAY</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">70031</td>
+<td style="text-align: left;">WEEKDAY</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>bs_hex <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  BusStop, hexagon) <span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">c</span>(BUS_STOP_N, HEX_ID))</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(bs_hex))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">BUS_STOP_N</th>
+<th style="text-align: left;">HEX_ID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">4655</td>
+<td style="text-align: left;">03331</td>
+<td style="text-align: left;">H0001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1106</td>
+<td style="text-align: left;">03341</td>
+<td style="text-align: left;">H0002</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3530</td>
+<td style="text-align: left;">03349</td>
+<td style="text-align: left;">H0002</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3787</td>
+<td style="text-align: left;">03371</td>
+<td style="text-align: left;">H0003</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2288</td>
+<td style="text-align: left;">03369</td>
+<td style="text-align: left;">H0004</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2414</td>
+<td style="text-align: left;">06069</td>
+<td style="text-align: left;">H0005</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="adding-hex_id-into-bus-trips-data" class="level3">
+<h3 class="anchored" data-anchor-id="adding-hex_id-into-bus-trips-data">6.1.1 Adding HEX_ID into bus trips data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>trips <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(trips, bs_hex)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(trips))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">BUS_STOP_N</th>
+<th style="text-align: left;">DAY_TYPE</th>
+<th style="text-align: right;">HOUR_OF_DAY</th>
+<th style="text-align: right;">TRIPS</th>
+<th style="text-align: left;">HEX_ID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">84671</td>
+<td style="text-align: left;">WEEKENDS/HOLIDAY</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">H0667</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10099</td>
+<td style="text-align: left;">WEEKENDS/HOLIDAY</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">H0024</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">64601</td>
+<td style="text-align: left;">WEEKENDS/HOLIDAY</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">H1934</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">53009</td>
+<td style="text-align: left;">WEEKENDS/HOLIDAY</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">H1474</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">80051</td>
+<td style="text-align: left;">WEEKENDS/HOLIDAY</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">H0893</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">70031</td>
+<td style="text-align: left;">WEEKDAY</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">H0751</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="generate-hexagon-time-period-travel-table" class="level2">
+<h2 class="anchored" data-anchor-id="generate-hexagon-time-period-travel-table">6.2 Generate Hexagon × time period travel table</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>trips <span class="ot">&lt;-</span> trips <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_period =</span> <span class="fu">case_when</span>(</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>      DAY_TYPE <span class="sc">==</span> <span class="st">"WEEKDAY"</span> <span class="sc">&amp;</span> HOUR_OF_DAY <span class="sc">&gt;=</span> <span class="dv">6</span> <span class="sc">&amp;</span> HOUR_OF_DAY <span class="sc">&lt;</span> <span class="dv">9</span> <span class="sc">~</span> <span class="st">"Weekday_Morning"</span>,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>      DAY_TYPE <span class="sc">==</span> <span class="st">"WEEKDAY"</span> <span class="sc">&amp;</span> HOUR_OF_DAY <span class="sc">&gt;=</span> <span class="dv">17</span> <span class="sc">&amp;</span> HOUR_OF_DAY <span class="sc">&lt;</span> <span class="dv">20</span> <span class="sc">~</span> <span class="st">"Weekday_Afternoon"</span>,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>      DAY_TYPE <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"SATURDAY"</span>, <span class="st">"SUNDAY"</span>, <span class="st">"PUBLIC_HOLIDAY"</span>) <span class="sc">&amp;</span> HOUR_OF_DAY <span class="sc">&gt;=</span> <span class="dv">11</span> <span class="sc">&amp;</span> HOUR_OF_DAY <span class="sc">&lt;</span> <span class="dv">20</span> <span class="sc">~</span> <span class="st">"Weekend_Holiday"</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(time_period))</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>hex_time_trips <span class="ot">&lt;-</span> trips <span class="sc">%&gt;%</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(HEX_ID, time_period) <span class="sc">%&gt;%</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">trips_sum =</span> <span class="fu">sum</span>(TRIPS, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>hex_time_trips <span class="ot">&lt;-</span> hex_time_trips <span class="sc">%&gt;%</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_index =</span> <span class="fu">as.numeric</span>(<span class="fu">factor</span>(time_period, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Weekday_Morning"</span>, <span class="st">"Weekday_Afternoon"</span>, <span class="st">"Weekend_Holiday"</span>))))</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(hex_time_trips)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  HEX_ID time_period       trips_sum time_index
+  &lt;fct&gt;  &lt;chr&gt;                 &lt;dbl&gt;      &lt;dbl&gt;
+1 H0001  Weekday_Afternoon        27          2
+2 H0002  Weekday_Afternoon        97          2
+3 H0002  Weekday_Morning           5          1
+4 H0003  Weekday_Afternoon        23          2
+5 H0003  Weekday_Morning           1          1
+6 H0004  Weekday_Afternoon        39          2</code></pre>
+</div>
+</div>
+</section>
+<section id="generate-space-time-cube" class="level2">
+<h2 class="anchored" data-anchor-id="generate-space-time-cube">6.3 Generate Space-Time Cube</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Kendall)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>hex_trend <span class="ot">&lt;-</span> hex_time_trips <span class="sc">%&gt;%</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(HEX_ID) <span class="sc">%&gt;%</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mk_tau =</span> <span class="fu">tryCatch</span>({</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(<span class="fu">n</span>() <span class="sc">&gt;=</span> <span class="dv">3</span>) <span class="fu">Kendall</span>(trips_sum)<span class="sc">$</span>tau <span class="cf">else</span> <span class="cn">NA_real_</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    }, <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NA_real_</span>),</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mk_p =</span> <span class="fu">tryCatch</span>({</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(<span class="fu">n</span>() <span class="sc">&gt;=</span> <span class="dv">3</span>) <span class="fu">Kendall</span>(trips_sum)<span class="sc">$</span>sl <span class="cf">else</span> <span class="cn">NA_real_</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    }, <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NA_real_</span>),</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="classify-ehsa-type" class="level2">
+<h2 class="anchored" data-anchor-id="classify-ehsa-type">6.4 Classify EHSA Type</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>hex_trend <span class="ot">&lt;-</span> hex_trend <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">EHSA_type =</span> <span class="fu">case_when</span>(</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>      mk_tau <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> mk_p <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">~</span> <span class="st">"Intensifying_Hotspot"</span>,</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>      mk_tau <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> mk_p <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">~</span> <span class="st">"Intensifying_Coldspot"</span>,</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>      mk_p <span class="sc">&gt;=</span> <span class="fl">0.05</span> <span class="sc">~</span> <span class="st">"Sporadic"</span>,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Other"</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(hex_trend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  HEX_ID mk_tau  mk_p EHSA_type
+  &lt;fct&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    
+1 H0001      NA    NA Other    
+2 H0002      NA    NA Other    
+3 H0003      NA    NA Other    
+4 H0004      NA    NA Other    
+5 H0005      NA    NA Other    
+6 H0006      NA    NA Other    </code></pre>
+</div>
+</div>
+</section>
+<section id="join-ehsa-type-back-to-hexagon-sf-for-mapping" class="level2">
+<h2 class="anchored" data-anchor-id="join-ehsa-type-back-to-hexagon-sf-for-mapping">6.5 Join EHSA Type back to Hexagon sf for mapping</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>hex_EHSA_sf <span class="ot">&lt;-</span> hexagon <span class="sc">%&gt;%</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(hex_trend, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"HEX_ID"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="visualize-ehsa-map" class="level2">
+<h2 class="anchored" data-anchor-id="visualize-ehsa-map">6.6 Visualize EHSA map</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(mpsz) <span class="sc">+</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"gray95"</span>, <span class="at">border.col =</span> <span class="st">"gray80"</span>) <span class="sc">+</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(hex_EHSA_sf) <span class="sc">+</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"EHSA_type"</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"Intensifying_Hotspot"</span> <span class="ot">=</span> <span class="st">"red"</span>,</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"Intensifying_Coldspot"</span> <span class="ot">=</span> <span class="st">"blue"</span>,</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"Sporadic"</span> <span class="ot">=</span> <span class="st">"yellow"</span>,</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"Other"</span> <span class="ot">=</span> <span class="st">"gray"</span>),</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">border.col =</span> <span class="st">"darkorange"</span>,</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">lwd =</span> <span class="fl">0.6</span>,</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">title =</span> <span class="st">"EHSA Type"</span>) <span class="sc">+</span></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-home_ex2_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The EHSA results indicate limited significant spatio-temporal trends. The overwhelming “Other” category (orange) suggests most hexagons show no statistically meaningful hot/cold spot patterns over time. The minimal “Missing” data (light orange) implies near-complete spatial coverage but confirms the absence of intensifying, diminishing, or sporadic hotspots. This likely reflects stable travel patterns during the observed periods, with insufficient volatility to generate significant EHSA classifications.</p>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>7.Conclusion</h1>
+<ol type="1">
+<li><p><strong>Spatial Clustering:​</strong>​ Bus trip origins show significant spatial autocorrelation. Distinct hotspots are concentrated in central Singapore (e.g., CBD, Orchard) and major regional hubs (e.g., Tampines, Jurong East), while cold spots are found in peripheral areas.</p></li>
+<li><p>​<strong>​Method Consistency:​</strong>​ Both Local Moran’s I and Getis-Ord Gi* statistics yielded consistent results, confirming the robustness of the identified spatial patterns.</p></li>
+<li><p>​<strong>​Temporal Stability:​</strong>​ Emerging Hot Spot Analysis (EHSA) classified most areas as “No Pattern” or “Sporadic”, indicating minimal significant change in spatial demand patterns across the three time periods analyzed.</p></li>
+<li><p>​<strong>​Planning Implication:​</strong>​ The results reveal a stable, mature public transport demand structure. This supports maintaining and optimizing services in existing high-demand corridors rather than large-scale rerouting.</p></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
