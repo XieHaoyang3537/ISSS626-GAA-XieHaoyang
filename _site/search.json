@@ -1160,5 +1160,68 @@
     "title": "Take-home Exercise 2",
     "section": "6.6 Visualize EHSA map",
     "text": "6.6 Visualize EHSA map\n\ntmap_mode(\"plot\")\ntm_shape(mpsz) +\n  tm_polygons(col = \"gray95\", border.col = \"gray80\") +\ntm_shape(hex_EHSA_sf) +\n  tm_polygons(col = \"EHSA_type\",\n              palette = c(\"Intensifying_Hotspot\" = \"red\",\n                          \"Intensifying_Coldspot\" = \"blue\",\n                          \"Sporadic\" = \"yellow\",\n                          \"Other\" = \"gray\"),\n              border.col = \"darkorange\",\n              lwd = 0.6,\n              title = \"EHSA Type\") +\ntm_layout(legend.outside = TRUE)\n\n\n\n\n\n\n\n\nThe EHSA results indicate limited significant spatio-temporal trends. The overwhelming “Other” category (orange) suggests most hexagons show no statistically meaningful hot/cold spot patterns over time. The minimal “Missing” data (light orange) implies near-complete spatial coverage but confirms the absence of intensifying, diminishing, or sporadic hotspots. This likely reflects stable travel patterns during the observed periods, with insufficient volatility to generate significant EHSA classifications."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html",
+    "href": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html",
+    "title": "Hands-on exercise 8: Geographically Weighted Predictive Models",
+    "section": "",
+    "text": "pacman::p_load(sf, spdep, GWmodel, SpatialML, \n               tmap, rsample, Metrics, tidyverse)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#getting-started",
+    "href": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#getting-started",
+    "title": "Hands-on exercise 8: Geographically Weighted Predictive Models",
+    "section": "",
+    "text": "pacman::p_load(sf, spdep, GWmodel, SpatialML, \n               tmap, rsample, Metrics, tidyverse)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#preparing-data",
+    "href": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#preparing-data",
+    "title": "Hands-on exercise 8: Geographically Weighted Predictive Models",
+    "section": "Preparing Data",
+    "text": "Preparing Data\n\nReading data file to rds\n\nmdata &lt;- read_rds(\"data/rawdata/mdata.rds\")\n\n\n\nData Sampling\n\nset.seed(1234)\nresale_split &lt;- initial_split(mdata, \n                              prop = 6.5/10,)\ntrain_data &lt;- training(resale_split)\ntest_data &lt;- testing(resale_split)\n\n\nwrite_rds(train_data, \"data/model/train_data.rds\")\nwrite_rds(test_data, \"data/model/test_data.rds\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#computing-correlation-matrix",
+    "href": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#computing-correlation-matrix",
+    "title": "Hands-on exercise 8: Geographically Weighted Predictive Models",
+    "section": "Computing Correlation Matrix",
+    "text": "Computing Correlation Matrix\n\nmdata_nogeo &lt;- mdata %&gt;%\n  st_drop_geometry()\ncorrplot::corrplot(cor(mdata_nogeo[, 2:17]), \n                   diag = FALSE, \n                   order = \"AOE\",\n                   tl.pos = \"td\", \n                   tl.cex = 0.5, \n                   method = \"number\", \n                   type = \"upper\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#retriving-the-stored-data",
+    "href": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#retriving-the-stored-data",
+    "title": "Hands-on exercise 8: Geographically Weighted Predictive Models",
+    "section": "Retriving the Stored Data",
+    "text": "Retriving the Stored Data\n\ntrain_data &lt;- read_rds(\"data/model/train_data.rds\")\ntest_data &lt;- read_rds(\"data/model/test_data.rds\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#building-a-non-spatial-multiple-linear-regression",
+    "href": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#building-a-non-spatial-multiple-linear-regression",
+    "title": "Hands-on exercise 8: Geographically Weighted Predictive Models",
+    "section": "Building a non-spatial multiple linear regression",
+    "text": "Building a non-spatial multiple linear regression\n\nprice_mlr &lt;- lm(resale_price ~ floor_area_sqm +\n                  storey_order + remaining_lease_mths +\n                  PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +\n                  PROX_MRT + PROX_PARK + PROX_MALL + \n                  PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +\n                  WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +\n                  WITHIN_1KM_PRISCH,\n                data=train_data)\nsummary(price_mlr)\n\n\nwrite_rds(price_mlr, \"data/model/price_mlr.rds\" )"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#gwr-predictive-method",
+    "href": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#gwr-predictive-method",
+    "title": "Hands-on exercise 8: Geographically Weighted Predictive Models",
+    "section": "gwr predictive method",
+    "text": "gwr predictive method\n\nComputing adaptive bandwidth\n\nbw_adaptive &lt;- bw.gwr(\n  formula = resale_price ~ floor_area_sqm +\n    storey_order + remaining_lease_mths +\n    PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +\n    PROX_MRT + PROX_PARK + PROX_MALL + \n    PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +\n    WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +\n    WITHIN_1KM_PRISCH,\n  data=train_data,\n  approach=\"CV\",\n  kernel=\"gaussian\",\n  adaptive=TRUE,\n  longlat=FALSE)\n\nwrite_rds(bw_adaptive, \"data/model/bw_adaptive.rds\")\n\n\n\nConstructing the adaptive bandwidth gwr model\n\nbw_adaptive &lt;- read_rds(\n  \"data/model/bw_adaptive.rds\")\n\n\ngwr_adaptive &lt;- gwr.basic(\n  formula = resale_price ~ floor_area_sqm +\n    storey_order + remaining_lease_mths + \n    PROX_CBD + PROX_ELDERLYCARE + \n    PROX_HAWKER + PROX_MRT + PROX_PARK + \n    PROX_MALL + PROX_SUPERMARKET +\n    WITHIN_350M_KINDERGARTEN +\n    WITHIN_350M_CHILDCARE + \n    WITHIN_350M_BUS + WITHIN_1KM_PRISCH,\n  data=train_data,\n  bw=bw_adaptive, \n  kernel = 'gaussian', \n  adaptive=TRUE,\n  longlat = FALSE)\n\nwrite_rds(gwr_adaptive, \n          \"data/model/gwr_adaptive.rds\")\n\n\n\nRetrieve gwr output object\n\ngwr_adaptive &lt;- read_rds(\"data/model/gwr_adaptive.rds\")\n\n\ngwr_adaptive\n\n\n\nComputing adaptive bandwidth for the test data\n\ngwr_bw_test_adaptive &lt;- bw.gwr(\n  formula = resale_price ~ floor_area_sqm +\n    storey_order + remaining_lease_mths +\n    PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +\n    PROX_MRT + PROX_PARK + PROX_MALL + \n    PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +\n    WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +\n    WITHIN_1KM_PRISCH,\n  data=test_data,\n  approach=\"CV\",\n  kernel=\"gaussian\",\n  adaptive=TRUE,\n  longlat=FALSE)\n\nwrite_rds(gwr_bw_test_adaptive, \n          \"data/model/gwr_bw_test_adaptive.rds\")\n\n\n\nComputing predicted values of the test data\n\ngwr_pred &lt;- gwr.predict(\n  formula = resale_price ~ floor_area_sqm + \n    storey_order + remaining_lease_mths + \n    PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER + \n    PROX_MRT + PROX_PARK + PROX_MALL + \n    PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +\n    WITHIN_350M_CHILDCARE + WITHIN_350M_BUS + \n    WITHIN_1KM_PRISCH, \n  data=train_data, \n  predictdata = test_data, \n  bw=40, \n  kernel = 'gaussian', \n  adaptive=TRUE, \n  longlat = FALSE)\n\nwrite_rds(gwr_pred, \n          \"data/model/gwr_pred.rds\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#calibrating-random-forest-model",
+    "href": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#calibrating-random-forest-model",
+    "title": "Hands-on exercise 8: Geographically Weighted Predictive Models",
+    "section": "Calibrating Random Forest Model",
+    "text": "Calibrating Random Forest Model\n\nPreparing coordinates data\n\ncoords &lt;- st_coordinates(mdata)\ncoords_train &lt;- st_coordinates(train_data)\ncoords_test &lt;- st_coordinates(test_data)\n\n\ncoords_train &lt;- write_rds(\n  coords_train, \n  \"data/model/coords_train.rds\" )\ncoords_test &lt;- write_rds(\n  coords_test, \n  \"data/model/coords_test.rds\" )\n\n\n\nDroping geometry field\n\ntrain_data_nogeom &lt;- train_data %&gt;% \n  st_drop_geometry()\n\ntest_data_nogeom &lt;- test_data %&gt;% \n  st_drop_geometry()\n\n\n\nCalibrating a non-spatial random forest model\n\nset.seed(1234)\nrf &lt;- ranger(\n  formula = resale_price ~ floor_area_sqm +\n    storey_order + remaining_lease_mths + \n    PROX_CBD + PROX_ELDERLYCARE + \n    PROX_HAWKER + PROX_MRT + PROX_PARK + \n    PROX_MALL + PROX_SUPERMARKET +\n    WITHIN_350M_KINDERGARTEN + \n    WITHIN_350M_CHILDCARE + \n    WITHIN_350M_BUS +  \n    WITHIN_1KM_PRISCH,\n  data=train_data_nogeom)\nrf\n\n\nwrite_rds(rf, \"data/model/rf.rds\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#calibrating-geographical-weighted-random-forest-model",
+    "href": "Hands-on_Ex/Hands-on_ex08/Hands-on_ex8.html#calibrating-geographical-weighted-random-forest-model",
+    "title": "Hands-on exercise 8: Geographically Weighted Predictive Models",
+    "section": "Calibrating Geographical Weighted Random Forest Model",
+    "text": "Calibrating Geographical Weighted Random Forest Model\n\nCalibrating using training data\n\nset.seed(1234)\ngwRF_adaptive &lt;- grf(\n  formula = resale_price ~ floor_area_sqm +\n    storey_order + remaining_lease_mths + \n    PROX_CBD + PROX_ELDERLYCARE + \n    PROX_HAWKER + PROX_MRT + PROX_PARK + \n    PROX_MALL + PROX_SUPERMARKET +\n    WITHIN_350M_KINDERGARTEN +\n    WITHIN_350M_CHILDCARE + \n    WITHIN_350M_BUS + WITHIN_1KM_PRISCH,\n  dframe=train_data_nogeom, \n  bw=40,\n  kernel=\"adaptive\",\n  coords=coords_train)\n\nwrite_rds(gwRF_adaptive, \"data/model/gwRF_adaptive.rds\")\n\n\ngwRF_adaptive &lt;- read_rds(\"data/model/gwRF_adaptive.rds\")\n\n\n\nPredicting by using test data\n\nPreparing the test data\n\ntest_data_nogeom &lt;- cbind(\n  test_data, coords_test) %&gt;%\n  st_drop_geometry()\n\n\n\nPredicting with test data\n\ngwRF_pred &lt;- predict.grf(gwRF_adaptive, \n                           test_data_nogeom, \n                           x.var.name=\"X\",\n                           y.var.name=\"Y\", \n                           local.w=1,\n                           global.w=0)\n\nGRF_pred &lt;- write_rds(gwRF_pred, \"data/model/GRF_pred.rds\")\n\n\n\nConverting the predicting output into a data frame\n\nGRF_pred &lt;- read_rds(\n  \"data/model/GRF_pred.rds\")\nGRF_pred_df &lt;- as.data.frame(GRF_pred)\n\n\ntest_data_p &lt;- cbind(\n  test_data, GRF_pred_df) %&gt;%\n  select(resale_price, GRF_pred)\n\n\nwrite_rds(test_data_p, \n          \"data/model/test_data_p.rds\")\n\n\n\n\nCalculating Root Mean Square Error\n\nrmse(test_data_p$resale_price, \n     test_data_p$GRF_pred)\n\n\n\nVisualising the predicted values\n\nggplot(data = test_data_p,\n       aes(x = GRF_pred,\n           y = resale_price)) +\n  geom_point()"
   }
 ]

@@ -47,7 +47,7 @@ This study uses August 2025 bus trip data to analyze passenger volumes across a 
 ## 2.1 Loading Packages
 
 | Packages | Function |
-|----------------|--------------------------------------------------------|
+|----|----|
 | sf | Core package for reading, processing, manipulating, and analyzing vector spatial data in R. |
 | tidyvers | A collection of data science tools for cleaning, visualizing, and importing data following the "tidy data" principle. |
 | tmap | Facilitates static and interactive spatial data visualization with a concise, customizable syntax. |
