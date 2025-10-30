@@ -311,4 +311,3 @@ ggplot(data = test_data_p,
            y = resale_price)) +
   geom_point()
 ```
-

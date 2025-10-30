@@ -1,0 +1,162 @@
+---
+title: "In-class_ex7"
+format: html
+---
+
+```{r}
+pacman::p_load(httr,tidyverse, sf, tmap, jsonlite, progress)
+```
+
+## Geocoding HDB resale data
+
+### Basic version
+
+```{r}
+HDBresale <- read_csv(
+  "data/rawdata/HDBresale.csv") %>%
+  filter(flat_type == "4 Room") %>%
+  filter(month >= "2025-09" & month < "2025-10")
+```
+
+```{r}
+HDBresale$street_name <- gsub(
+  "ST\\.","SAINT",
+  HDBresale$street_name)
+```
+
+```{r}
+geocode <- function(block, streetname) {
+  base_url <- "https://onemap.gov.sg/api/common/elastic/search"
+  address <- paste(block, streetname, sep = "")
+  query <- list(
+    "searchVal" = address,
+    "returnGeom" = "Y",
+    "getAddrDetails" = "N",
+    "pageNum" = "1"
+  )
+  
+  res <- GET(base_url, query = query)
+  restext <- content(res, as = "text")
+  json <- fromJSON(restext)
+  
+    if (length(json$results) == 0) {
+    return(data.frame(results.LATITUDE = NA, results.LONGITUDE = NA))
+  }
+  
+  output <- as.data.frame(json$results) %>%
+    select(LATITUDE, LONGITUDE)
+  
+  return(output[1, ])
+}
+```
+
+```{r}
+for (i in 1:nrow(HDBresale)) {
+  temp_output <- tryCatch({
+    geocode(HDBresale[i, "block"], HDBresale[i, "street_name"])
+  }, error = function(e) {
+    data.frame(LATITUDE = NA, LONGITUDE = NA)
+  })
+  
+  HDBresale$LATITUDE[i] <- temp_output$LATITUDE
+  HDBresale$LONGITUDE[i] <- temp_output$LONGITUDE
+}
+```
+
+```{r}
+HDBresale_sf <- HDBresale %>%
+  st_as_sf(
+    coords = c("LONGITUDE", "LATITUDE"),
+    crs = 4326) %>%
+  st_transform(crs = 3414)
+```
+
+```{r}
+preschool = st_read("data/rawdata/PreschoolsLocation.kml") %>%
+  st_transform(crs = 3414)
+```
+
+```{r}
+within_350m <- st_is_within_distance(
+  HDBresale_sf, preschool, dist = 350)
+
+HDBresale_sf <- HDBresale_sf %>%
+  mutate(prischool_350m = map_int(within_350m, length))
+```
+
+## Model
+
+```{r}
+pacman::p_load(
+  sf, spdep, GWmodel, SpatialML,
+  tmap, rsample, Metrics, tidyverse,
+  knitr, kableExtra, spatialRF,
+  randomForestExplainer
+)
+```
+
+```{r}
+mdata <- read_rds("D:/XieHaoyang3537/ISSS626-GAA-XieHaoyang/Hands-on_Ex/Hands-on_ex08/data/rawdata/mdata.rds")
+```
+
+### Data Sampling
+
+```{r}
+set.seed(1234)
+HDB_sample <- mdata %>%
+  sample_n(1500)
+```
+
+### Checking of overlaping
+
+```{r}
+overlapping_points <- HDB_sample %>%
+  mutate(overlap = lengths(st_equals(.,.)) >1)
+```
+
+```{r}
+set.seed(1234)
+resale_split <- initial_split(HDB_sample,
+                              prop = 6.67/10,)
+train_data <- training(resale_split)
+test_data <- testing(resale_split)
+```
+
+```{r}
+price_mlr <- lm(resale_price ~ floor_area_sqm +
+                  storey_order + remaining_lease_mths +
+                  PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +
+                  PROX_MRT + PROX_PARK + PROX_MALL + 
+                  PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +
+                  WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +
+                  WITHIN_1KM_PRISCH,
+                data=train_data)
+olsrr::ols_regress(price_mlr)
+```
+
+```{r}
+bw_adaptive <- bw.gwr(resale_price ~ floor_area_sqm +
+                  storey_order + remaining_lease_mths +
+                  PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +
+                  PROX_MRT + PROX_PARK + PROX_MALL + 
+                  PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +
+                  WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +
+                  WITHIN_1KM_PRISCH,
+                  data=train_data,
+                  approach="CV",
+                  kernel="gaussian",
+                  adaptive=TRUE,
+                  longlat=FALSE)
+```
+
+```{r}
+write_rds(bw_adaptive, "data/bw_adaptive.rds")
+```
+
+```{r}
+bw_adaptive
+```
+
+```{r}
+gwr_adaptive <-read_rds("data/bw_adaptive.rds")
+```
