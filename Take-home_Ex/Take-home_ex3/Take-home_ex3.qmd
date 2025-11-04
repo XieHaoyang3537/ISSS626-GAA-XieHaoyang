@@ -1,0 +1,40 @@
+---
+title: "Take-home_ex3"
+author: "XieHaoyang"
+date-modified: "last-modified"
+execute: 
+  warning: false
+---
+
+# 1. Overview
+
+## 1.1 Background
+
+## 1.2 Objectives
+
+# 2. Data Wrangling
+
+## 2.1 Loading Packages
+
+```{r}
+pacman::p_load( tidyverse, sf, httr, jsonlite, tmap, ggplot2, spdep, GWmodel,
+                olsrr, broom, rsample, kableExtra, knitr)
+```
+
+## 2.2 The Data
+
+## 2.3 Geocoding HDB resale data
+
+### Importing HDB data
+
+```{r}
+HDBresale <- read_csv(
+  "data/rawdata/HDBresale.csv") %>%
+  filter(flat_type == "4 Room") %>%
+  filter(month >= "2025-01" & month < "2025-10")
+
+HDBresale$street_name <- gsub("ST\\.", "SAINT", HDBresale$street_name)
+
+glimpse(HDBresale)
+```
+
