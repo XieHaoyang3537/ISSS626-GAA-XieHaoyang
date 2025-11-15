@@ -1,26 +1,55 @@
 ---
-title: "Take-home Exercise 3"
+title: "Take-home Exercise 3: Modelling HDB Resale Prices with Geographically Weighted Methods"
 author: "XieHaoyang"
 date-modified: "last-modified"
 execute: 
   warning: false
 ---
 
+![](images/test.png)
+
 # 1. Overview
 
 ## 1.1 Background
 
+Housing represents a fundamental component of household wealth and a major financial commitment for most individuals worldwide. In Singapore, where over 80% of the population resides in public housing, Housing & Development Board (HDB) resale prices are of particular socioeconomic significance. Traditional housing price models, typically estimated using Ordinary Least Squares (OLS) regression, often fail to account for the spatial dependencies inherent in real estate data. As noted by Anselin (1998), when spatial autocorrelation and spatial heterogeneity exist—common characteristics in geographical datasets—OLS estimations may yield biased, inconsistent, or inefficient results. This limitation is especially relevant in Singapore's context, where locational advantages (e.g., proximity to MRT stations, CBD, and amenities) exhibit complex spatial patterns that conventional global models cannot adequately capture.
+
 ## 1.2 Objectives
+
+The primary objective of this exercise is to develop a spatially informed explanatory model identifying factors affecting 4-room HDB resale prices in Singapore during January to September 2025. Specifically, this study aims to:
+
+1.  Employ geospatial data wrangling techniques to transform aspatial HDB transaction data into geographically referenced information
+
+2.  Derive relevant structural and locational predictors using open-source geographical data
+
+3.  Calibrate both global (OLS) and local (GWR) regression models to compare their performance
+
+4.  Evaluate the presence and impact of spatial heterogeneity on housing price determinants
+
+5.  Provide nuanced insights into how various factors differentially influence resale prices across geographical locations
 
 # 2. Data Wrangling
 
 ## 2.1 Loading Packages
+
+| Package | Function |
+|----|----|
+| httr | R package for HTTP requests to interact with web APIs |
+| tidyverse | Collection of R packages for data science including dplyr, ggplot2, etc. |
+| sf | Simple Features for R, handling spatial vector data |
+| tmap | Thematic map package for creating static and interactive maps |
+| jsonlite | R package for parsing and generating JSON data |
+| progress | Progress bar package for long-running tasks |
+| rsample | Resampling methods for model assessment and validation |
+| GWmodel | Geographically weighted models for spatial heterogeneity modeling |
 
 ```{r}
 pacman::p_load(httr, tidyverse, sf, tmap, jsonlite, progress, rsample, GWmodel)
 ```
 
 ## 2.2 The Data
+
+Raw data: **HDB Resale Flat Prices** are from *data.gov.sg* and published by the *Singapore Housing & Development Board*. The dataset contains all HDB resale prices from 2017 to the present, totaling 219,071 records. This report uses only data from January 2025 to September 2025.
 
 ## 2.3 Importing HDB data
 
@@ -99,6 +128,8 @@ write_rds(HDBresale, "data/rds/HDB.rds")
 HDB <- readRDS("data/rds/HDB.rds")
 ```
 
+The code above calls the OneMap API to obtain latitude and longitude data. Because this process is time-consuming, it is only run once, and the generated rds file is saved for later use.
+
 ### 2.4.4 Convert SF data
 
 ```{r}
@@ -110,6 +141,14 @@ HDBresale_sf <- HDB %>%
 ```
 
 ## 2.5 Load other geospatial data
+
+This report also used the following data:
+
+1.  Zoning boundary data from Singapore's 2019 Master Plan, used as the base map for mapping.
+
+2.  Geospatial data for all preschools in Singapore.
+
+3.  Geospatial data for all MRT/LRT station exits in Singapore.
 
 ```{r}
 mpsz <- st_read("data/rawdata/MasterPlan2019SubzoneBoundaryNoSeaKML.kml") %>% 
@@ -124,11 +163,11 @@ mrt <- st_read("data/rawdata/LTAMRTStationExitKML.kml") %>%
 
 ## 2.6 Distance calculation
 
+Calculate the distance from each HDB unit to the nearest MRT station.
+
 ```{r}
-# Calculate the distance from each HDB unit to the nearest MRT station.
 nearest_mrt <- st_nearest_feature(HDBresale_sf, mrt)
 HDBresale_sf$PROX_MRT <- st_distance(HDBresale_sf, mrt[nearest_mrt, ], by_element = TRUE)
-# Convert to kilometers
 HDBresale_sf$PROX_MRT <- as.numeric(HDBresale_sf$PROX_MRT) / 1000
 
 # Calculate the number of preschools within 350 meters of each HDB unit.
@@ -138,9 +177,9 @@ HDBresale_sf$WITHIN_350M_KINDERGARTEN <- map_int(within_350m_preschool, length)
 head(HDBresale_sf %>% select(PROX_MRT, WITHIN_350M_KINDERGARTEN))
 ```
 
-## 3. Exploratory analysis
+# 3. Exploratory analysis
 
-### 3.1 Spatial distribution of HDB resale prices
+## 3.1 Spatial distribution of HDB resale prices
 
 ```{r}
 tmap_mode("plot")
@@ -160,7 +199,9 @@ tm_shape(HDBresale_sf) +
             frame = FALSE) 
 ```
 
-### 3.2 Spatial pattern visualizing distance to MRT
+Generally, **HDB resale prices are significantly higher in and around the city center** (mostly green and yellow) and relatively lower in areas far from the city center (mostly purple and dark blue), reflecting a distinct spatial variation in resale prices, which is closely related to location factors.
+
+## 3.2 Spatial pattern visualizing distance to MRT
 
 ```{r}
 tm_shape(mpsz) +
@@ -183,7 +224,9 @@ tm_shape(mrt) +
             frame = FALSE)
 ```
 
-### 3.3 Spatial pattern of preschool density visualization
+**Areas in and around the city center are mostly close to MRT stations** (predominantly yellow, orange, and red), while **some areas far from the core are relatively far from MRT stations** (predominantly light purple and dark purple), reflecting the spatial distribution pattern around MRT stations in Singapore, which can also provide a reference for understanding the location value of HDB flats, etc.
+
+## 3.3 Spatial pattern of preschool density visualization
 
 ```{r}
 tm_shape(mpsz) +
@@ -205,6 +248,8 @@ tm_shape(preschool) +
   tm_layout(title = "Spatial Distribution: Preschool Density",
             frame = FALSE)
 ```
+
+**The city center and densely populated residential areas have a higher density of kindergartens** (more dark-colored points), with more kindergartens accessible within a 350-meter radius. In contrast, some peripheral areas have relatively lower kindergarten density (more light-colored points). 
 
 # 4. Modeling
 
@@ -244,8 +289,9 @@ HDBresale_sf <- HDBresale_sf %>%
 
 ### 4.1.2 Location Factors
 
+Calculate the distance to the CBD (assuming the CBD is near Raffles Place)
+
 ```{r}
-# Calculate the distance to the CBD (assuming the CBD is near Raffles Place).
 cbd_point <- data.frame(lon = 103.851959, lat = 1.284053) %>%
   st_as_sf(coords = c("lon", "lat"), crs = 4326) %>%
   st_transform(crs = 3414)
@@ -514,3 +560,11 @@ cat("GWR R-squared:", round(gwr_adaptive$GW.diagnostic$gw.R2, 4), "\n")
 cat("Performance improvement:", round((gwr_adaptive$GW.diagnostic$gw.R2 - summary(price_mlr)$r.squared) * 100, 1), "%\n")
 cat("Number of valid parameters for GWR:", round(gwr_adaptive$GW.diagnostic$enp, 1), "\n")
 ```
+
+# 5. Conclusion
+
+This study successfully demonstrates the critical importance of accounting for spatial heterogeneity in HDB resale price modelling. The comparison between Ordinary Least Squares (OLS) and Geographically Weighted Regression (GWR) reveals substantial improvements in model performance, with explanatory power increasing from 78.6% (OLS) to 93.7% (GWR). More significantly, the GWR model uncovers the spatially varying relationships between housing prices and their determinants—relationships that the global OLS model inherently masks.
+
+The findings confirm that factors such as proximity to MRT stations, distance from the CBD, and structural attributes do not exert uniform effects across Singapore. Instead, their influences are highly localized, contingent upon specific regional contexts. This nuanced understanding provides valuable insights for various stakeholders: homeowners and buyers can make more informed location-specific decisions, urban planners can develop targeted regional policies, and real estate professionals can conduct more accurate, geographically sensitive valuations.
+
+Ultimately, this exercise validates that geospatial analytics, particularly GWR, offers a superior methodological framework for understanding Singapore's complex public housing market. Future research could incorporate additional temporal dimensions or more granular neighborhood characteristics to further enhance the model's explanatory depth.

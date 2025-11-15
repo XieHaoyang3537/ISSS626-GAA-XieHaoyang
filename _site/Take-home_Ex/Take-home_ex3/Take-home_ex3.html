@@ -8,7 +8,7 @@
 
 <meta name="author" content="XieHaoyang">
 
-<title>Take-home Exercise 3 – ISSS626-GAA</title>
+<title>Take-home Exercise 3: Modelling HDB Resale Prices with Geographically Weighted Methods – ISSS626-GAA</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -281,12 +281,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#load-other-geospatial-data" id="toc-load-other-geospatial-data" class="nav-link" data-scroll-target="#load-other-geospatial-data">2.5 Load other geospatial data</a></li>
   <li><a href="#distance-calculation" id="toc-distance-calculation" class="nav-link" data-scroll-target="#distance-calculation">2.6 Distance calculation</a></li>
+  </ul></li>
   <li><a href="#exploratory-analysis" id="toc-exploratory-analysis" class="nav-link" data-scroll-target="#exploratory-analysis">3. Exploratory analysis</a>
   <ul class="collapse">
   <li><a href="#spatial-distribution-of-hdb-resale-prices" id="toc-spatial-distribution-of-hdb-resale-prices" class="nav-link" data-scroll-target="#spatial-distribution-of-hdb-resale-prices">3.1 Spatial distribution of HDB resale prices</a></li>
   <li><a href="#spatial-pattern-visualizing-distance-to-mrt" id="toc-spatial-pattern-visualizing-distance-to-mrt" class="nav-link" data-scroll-target="#spatial-pattern-visualizing-distance-to-mrt">3.2 Spatial pattern visualizing distance to MRT</a></li>
   <li><a href="#spatial-pattern-of-preschool-density-visualization" id="toc-spatial-pattern-of-preschool-density-visualization" class="nav-link" data-scroll-target="#spatial-pattern-of-preschool-density-visualization">3.3 Spatial pattern of preschool density visualization</a></li>
-  </ul></li>
   </ul></li>
   <li><a href="#modeling" id="toc-modeling" class="nav-link" data-scroll-target="#modeling">4. Modeling</a>
   <ul class="collapse">
@@ -310,6 +310,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#gwr-residual-space-distribution" id="toc-gwr-residual-space-distribution" class="nav-link" data-scroll-target="#gwr-residual-space-distribution">4.6.1 GWR residual space distribution</a></li>
   </ul></li>
   </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">5. Conclusion</a></li>
   </ul>
 </nav>
 </nav>
@@ -322,7 +323,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Take-home Exercise 3</h1>
+<h1 class="title">Take-home Exercise 3: Modelling HDB Resale Prices with Geographically Weighted Methods</h1>
 </div>
 
 
@@ -351,25 +352,82 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p><img src="images/test.png" class="img-fluid"></p>
 <section id="overview" class="level1">
 <h1>1. Overview</h1>
 <section id="background" class="level2">
 <h2 class="anchored" data-anchor-id="background">1.1 Background</h2>
+<p>Housing represents a fundamental component of household wealth and a major financial commitment for most individuals worldwide. In Singapore, where over 80% of the population resides in public housing, Housing &amp; Development Board (HDB) resale prices are of particular socioeconomic significance. Traditional housing price models, typically estimated using Ordinary Least Squares (OLS) regression, often fail to account for the spatial dependencies inherent in real estate data. As noted by Anselin (1998), when spatial autocorrelation and spatial heterogeneity exist—common characteristics in geographical datasets—OLS estimations may yield biased, inconsistent, or inefficient results. This limitation is especially relevant in Singapore’s context, where locational advantages (e.g., proximity to MRT stations, CBD, and amenities) exhibit complex spatial patterns that conventional global models cannot adequately capture.</p>
 </section>
 <section id="objectives" class="level2">
 <h2 class="anchored" data-anchor-id="objectives">1.2 Objectives</h2>
+<p>The primary objective of this exercise is to develop a spatially informed explanatory model identifying factors affecting 4-room HDB resale prices in Singapore during January to September 2025. Specifically, this study aims to:</p>
+<ol type="1">
+<li><p>Employ geospatial data wrangling techniques to transform aspatial HDB transaction data into geographically referenced information</p></li>
+<li><p>Derive relevant structural and locational predictors using open-source geographical data</p></li>
+<li><p>Calibrate both global (OLS) and local (GWR) regression models to compare their performance</p></li>
+<li><p>Evaluate the presence and impact of spatial heterogeneity on housing price determinants</p></li>
+<li><p>Provide nuanced insights into how various factors differentially influence resale prices across geographical locations</p></li>
+</ol>
 </section>
 </section>
 <section id="data-wrangling" class="level1">
 <h1>2. Data Wrangling</h1>
 <section id="loading-packages" class="level2">
 <h2 class="anchored" data-anchor-id="loading-packages">2.1 Loading Packages</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Package</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>httr</td>
+<td>R package for HTTP requests to interact with web APIs</td>
+</tr>
+<tr class="even">
+<td>tidyverse</td>
+<td>Collection of R packages for data science including dplyr, ggplot2, etc.</td>
+</tr>
+<tr class="odd">
+<td>sf</td>
+<td>Simple Features for R, handling spatial vector data</td>
+</tr>
+<tr class="even">
+<td>tmap</td>
+<td>Thematic map package for creating static and interactive maps</td>
+</tr>
+<tr class="odd">
+<td>jsonlite</td>
+<td>R package for parsing and generating JSON data</td>
+</tr>
+<tr class="even">
+<td>progress</td>
+<td>Progress bar package for long-running tasks</td>
+</tr>
+<tr class="odd">
+<td>rsample</td>
+<td>Resampling methods for model assessment and validation</td>
+</tr>
+<tr class="even">
+<td>GWmodel</td>
+<td>Geographically weighted models for spatial heterogeneity modeling</td>
+</tr>
+</tbody>
+</table>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(httr, tidyverse, sf, tmap, jsonlite, progress, rsample, GWmodel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="the-data" class="level2">
 <h2 class="anchored" data-anchor-id="the-data">2.2 The Data</h2>
+<p>Raw data: <strong>HDB Resale Flat Prices</strong> are from <em>data.gov.sg</em> and published by the <em>Singapore Housing &amp; Development Board</em>. The dataset contains all HDB resale prices from 2017 to the present, totaling 219,071 records. This report uses only data from January 2025 to September 2025.</p>
 </section>
 <section id="importing-hdb-data" class="level2">
 <h2 class="anchored" data-anchor-id="importing-hdb-data">2.3 Importing HDB data</h2>
@@ -444,6 +502,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>HDB <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/rds/HDB.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>The code above calls the OneMap API to obtain latitude and longitude data. Because this process is time-consuming, it is only run once, and the generated rds file is saved for later use.</p>
 </section>
 <section id="convert-sf-data" class="level3">
 <h3 class="anchored" data-anchor-id="convert-sf-data">2.4.4 Convert SF data</h3>
@@ -458,6 +517,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="load-other-geospatial-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-other-geospatial-data">2.5 Load other geospatial data</h2>
+<p>This report also used the following data:</p>
+<ol type="1">
+<li><p>Zoning boundary data from Singapore’s 2019 Master Plan, used as the base map for mapping.</p></li>
+<li><p>Geospatial data for all preschools in Singapore.</p></li>
+<li><p>Geospatial data for all MRT/LRT station exits in Singapore.</p></li>
+</ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mpsz <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/rawdata/MasterPlan2019SubzoneBoundaryNoSeaKML.kml"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_zm</span>(<span class="at">drop =</span> <span class="cn">TRUE</span>, <span class="at">what =</span> <span class="st">"ZM"</span>) <span class="sc">%&gt;%</span> <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">3414</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -501,18 +566,17 @@ Geodetic CRS:  WGS 84</code></pre>
 </section>
 <section id="distance-calculation" class="level2">
 <h2 class="anchored" data-anchor-id="distance-calculation">2.6 Distance calculation</h2>
+<p>Calculate the distance from each HDB unit to the nearest MRT station.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the distance from each HDB unit to the nearest MRT station.</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>nearest_mrt <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(HDBresale_sf, mrt)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>HDBresale_sf<span class="sc">$</span>PROX_MRT <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(HDBresale_sf, mrt[nearest_mrt, ], <span class="at">by_element =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to kilometers</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>HDBresale_sf<span class="sc">$</span>PROX_MRT <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(HDBresale_sf<span class="sc">$</span>PROX_MRT) <span class="sc">/</span> <span class="dv">1000</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the number of preschools within 350 meters of each HDB unit.</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>within_350m_preschool <span class="ot">&lt;-</span> <span class="fu">st_is_within_distance</span>(HDBresale_sf, preschool, <span class="at">dist =</span> <span class="dv">350</span>)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>HDBresale_sf<span class="sc">$</span>WITHIN_350M_KINDERGARTEN <span class="ot">&lt;-</span> <span class="fu">map_int</span>(within_350m_preschool, length)</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(HDBresale_sf <span class="sc">%&gt;%</span> <span class="fu">select</span>(PROX_MRT, WITHIN_350M_KINDERGARTEN))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>nearest_mrt <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(HDBresale_sf, mrt)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>HDBresale_sf<span class="sc">$</span>PROX_MRT <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(HDBresale_sf, mrt[nearest_mrt, ], <span class="at">by_element =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>HDBresale_sf<span class="sc">$</span>PROX_MRT <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(HDBresale_sf<span class="sc">$</span>PROX_MRT) <span class="sc">/</span> <span class="dv">1000</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the number of preschools within 350 meters of each HDB unit.</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>within_350m_preschool <span class="ot">&lt;-</span> <span class="fu">st_is_within_distance</span>(HDBresale_sf, preschool, <span class="at">dist =</span> <span class="dv">350</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>HDBresale_sf<span class="sc">$</span>WITHIN_350M_KINDERGARTEN <span class="ot">&lt;-</span> <span class="fu">map_int</span>(within_350m_preschool, length)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(HDBresale_sf <span class="sc">%&gt;%</span> <span class="fu">select</span>(PROX_MRT, WITHIN_350M_KINDERGARTEN))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 6 features and 2 fields
 Geometry type: POINT
@@ -531,10 +595,11 @@ Projected CRS: SVY21 / Singapore TM
 </div>
 </div>
 </section>
-<section id="exploratory-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="exploratory-analysis">3. Exploratory analysis</h2>
-<section id="spatial-distribution-of-hdb-resale-prices" class="level3">
-<h3 class="anchored" data-anchor-id="spatial-distribution-of-hdb-resale-prices">3.1 Spatial distribution of HDB resale prices</h3>
+</section>
+<section id="exploratory-analysis" class="level1">
+<h1>3. Exploratory analysis</h1>
+<section id="spatial-distribution-of-hdb-resale-prices" class="level2">
+<h2 class="anchored" data-anchor-id="spatial-distribution-of-hdb-resale-prices">3.1 Spatial distribution of HDB resale prices</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -559,9 +624,10 @@ Projected CRS: SVY21 / Singapore TM
 </div>
 </div>
 </div>
+<p>Generally,&nbsp;<strong>HDB resale prices are significantly higher in and around the city center</strong>&nbsp;(mostly green and yellow) and relatively lower in areas far from the city center (mostly purple and dark blue), reflecting a distinct spatial variation in resale prices, which is closely related to location factors.</p>
 </section>
-<section id="spatial-pattern-visualizing-distance-to-mrt" class="level3">
-<h3 class="anchored" data-anchor-id="spatial-pattern-visualizing-distance-to-mrt">3.2 Spatial pattern visualizing distance to MRT</h3>
+<section id="spatial-pattern-visualizing-distance-to-mrt" class="level2">
+<h2 class="anchored" data-anchor-id="spatial-pattern-visualizing-distance-to-mrt">3.2 Spatial pattern visualizing distance to MRT</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(mpsz) <span class="sc">+</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>,</span>
@@ -589,9 +655,10 @@ Projected CRS: SVY21 / Singapore TM
 </div>
 </div>
 </div>
+<p><strong>Areas in and around the city center are mostly close to MRT stations</strong>&nbsp;(predominantly yellow, orange, and red), while&nbsp;<strong>some areas far from the core are relatively far from MRT stations</strong>&nbsp;(predominantly light purple and dark purple), reflecting the spatial distribution pattern around MRT stations in Singapore, which can also provide a reference for understanding the location value of HDB flats, etc.</p>
 </section>
-<section id="spatial-pattern-of-preschool-density-visualization" class="level3">
-<h3 class="anchored" data-anchor-id="spatial-pattern-of-preschool-density-visualization">3.3 Spatial pattern of preschool density visualization</h3>
+<section id="spatial-pattern-of-preschool-density-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="spatial-pattern-of-preschool-density-visualization">3.3 Spatial pattern of preschool density visualization</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(mpsz) <span class="sc">+</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>,</span>
@@ -619,7 +686,7 @@ Projected CRS: SVY21 / Singapore TM
 </div>
 </div>
 </div>
-</section>
+<p><strong>The city center and densely populated residential areas have a higher density of kindergartens</strong>&nbsp;(more dark-colored points), with more kindergartens accessible within a 350-meter radius. In contrast, some peripheral areas have relatively lower kindergarten density (more light-colored points).&nbsp;</p>
 </section>
 </section>
 <section id="modeling" class="level1">
@@ -660,14 +727,14 @@ Projected CRS: SVY21 / Singapore TM
 </section>
 <section id="location-factors" class="level3">
 <h3 class="anchored" data-anchor-id="location-factors">4.1.2 Location Factors</h3>
+<p>Calculate the distance to the CBD (assuming the CBD is near Raffles Place)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the distance to the CBD (assuming the CBD is near Raffles Place).</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>cbd_point <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">lon =</span> <span class="fl">103.851959</span>, <span class="at">lat =</span> <span class="fl">1.284053</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">3414</span>)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>HDBresale_sf<span class="sc">$</span>PROX_CBD <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(HDBresale_sf, cbd_point) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>() <span class="sc">/</span> <span class="dv">1000</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>cbd_point <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">lon =</span> <span class="fl">103.851959</span>, <span class="at">lat =</span> <span class="fl">1.284053</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">3414</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>HDBresale_sf<span class="sc">$</span>PROX_CBD <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(HDBresale_sf, cbd_point) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>() <span class="sc">/</span> <span class="dv">1000</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>within_1km_pri <span class="ot">&lt;-</span> <span class="fu">st_is_within_distance</span>(HDBresale_sf, preschool, <span class="at">dist =</span> <span class="dv">1000</span>)</span>
@@ -968,7 +1035,7 @@ Adaptive bandwidth: 22 CV score: 2.217772e+12 </code></pre>
 <pre><code>   ***********************************************************************
    *                       Package   GWmodel                             *
    ***********************************************************************
-   Program starts at: 2025-11-15 14:22:53.505236 
+   Program starts at: 2025-11-15 16:21:57.996338 
    Call:
    gwr.basic(formula = resale_price ~ floor_area_sqm + storey_order + 
     remaining_lease_mths + PROX_CBD + PROX_MRT + WITHIN_1KM_PRISCH, 
@@ -1050,7 +1117,7 @@ Adaptive bandwidth: 22 CV score: 2.217772e+12 </code></pre>
    Adjusted R-square value:  0.9216347 
 
    ***********************************************************************
-   Program stops at: 2025-11-15 14:22:54.111359 </code></pre>
+   Program stops at: 2025-11-15 16:21:58.229127 </code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1218,10 +1285,16 @@ Adaptive bandwidth: 22 CV score: 2.217772e+12 </code></pre>
 <pre><code>Number of valid parameters for GWR: 198.1 </code></pre>
 </div>
 </div>
-
-
 </section>
 </section>
+</section>
+<section id="conclusion" class="level1">
+<h1>5. Conclusion</h1>
+<p>This study successfully demonstrates the critical importance of accounting for spatial heterogeneity in HDB resale price modelling. The comparison between Ordinary Least Squares (OLS) and Geographically Weighted Regression (GWR) reveals substantial improvements in model performance, with explanatory power increasing from 78.6% (OLS) to 93.7% (GWR). More significantly, the GWR model uncovers the spatially varying relationships between housing prices and their determinants—relationships that the global OLS model inherently masks.</p>
+<p>The findings confirm that factors such as proximity to MRT stations, distance from the CBD, and structural attributes do not exert uniform effects across Singapore. Instead, their influences are highly localized, contingent upon specific regional contexts. This nuanced understanding provides valuable insights for various stakeholders: homeowners and buyers can make more informed location-specific decisions, urban planners can develop targeted regional policies, and real estate professionals can conduct more accurate, geographically sensitive valuations.</p>
+<p>Ultimately, this exercise validates that geospatial analytics, particularly GWR, offers a superior methodological framework for understanding Singapore’s complex public housing market. Future research could incorporate additional temporal dimensions or more granular neighborhood characteristics to further enhance the model’s explanatory depth.</p>
+
+
 </section>
 
 </main> <!-- /main -->
