@@ -277,6 +277,7 @@ HDBresale_sf %>%
          PROX_MRT, PROX_CBD, WITHIN_350M_KINDERGARTEN, WITHIN_1KM_PRISCH) %>%
   summary()
 ```
+
 The data has no missing values, making it suitable for modeling. However, we noticed that the remaining lease term value was not identified, so further processing is needed.
 
 ```{r}
